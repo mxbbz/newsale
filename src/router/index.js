@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import NavBar from '@/views/home/navbar'
-
+import Home from '@/views/home.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    component: NavBar
+    component: Home
   }
 ]
 
