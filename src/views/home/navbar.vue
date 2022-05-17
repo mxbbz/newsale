@@ -28,11 +28,6 @@
 
 <script>
 export default {
-  methods: {
-    11 () {
-      console.log('11')
-    }
-  }
 }
 </script>
 
