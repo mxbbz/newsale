@@ -1,54 +1,61 @@
+<!--  -->
 <template>
-  <div class="login">
-    <div class="loginmenu">
+<div class='login'>
+  <div class="loginmenu">
+    <el-tabs v-model="activeName" type="card">
+    <el-tab-pane label="登录" name="login">
       <el-form
-        :model="ruleForm"
+        :model="loginForm"
         status-icon
         :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
+        ref="loginForm"
+        label-width="60px"
         class="demo-ruleForm"
       >
         <el-form-item label="账号" prop="login">
           <el-input
             type="login"
-            v-model="ruleForm.login"
+            v-model="loginForm.login"
             autocomplete="off"
           ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
           <el-input
             type="password"
-            v-model="ruleForm.pass"
+            v-model="loginForm.pass"
             autocomplete="off"
           ></el-input>
         </el-form-item>
          
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button type="primary" @click="submitForm('loginForm')"
             >登录</el-button
           >
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
 
-         <!-- 注册与找回密码 -->
-         <ul class="help">
-          <li>
-            <router-link to="/register">注册</router-link>
-          </li>
-          <li>
-            <router-link to="/back">找回密码</router-link>
-          </li>
-        </ul>
       </el-form>
-    </div>
+    </el-tab-pane>
+    <el-tab-pane label="注册" name="register"><register></register></el-tab-pane>
+    
+    <el-tab-pane label="找回密码" name="back"><back></back></el-tab-pane>
+  </el-tabs>
   </div>
-</template> 
+</div>
+</template>
+
 <script>
+//这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
+//例如：import 《组件名称》 from '《组件路径》';
+
+import register from '@/components/register.vue'
+import back from '@/components/back.vue'
 export default {
-  name: 'Login',
-  data() {
-    var checkLogin = (rule, value, callback) => {
+  
+//import引入的组件需要注入到对象中才能使用
+components: {register,back},
+data() {
+  var checkLogin = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('账号不能为空'));
       }
@@ -58,12 +65,14 @@ export default {
         return callback(new Error('密码不能为空'));
       }
     };
-    return {
-      ruleForm: {
-        login: '',
-        pass: '',
-      },
-      rules: {
+//这里存放数据
+return {
+  loginForm:{
+    login: '',
+    pass: ''
+  },
+  activeName:'login',
+  rules: {
         login: [
           { validator: checkLogin, trigger: 'blur' }
         ],
@@ -71,9 +80,14 @@ export default {
           { validator: checkPass, trigger: 'blur' }
         ],
       }
-    };
-  },
-  methods: {
+};
+},
+//监听属性 类似于data概念
+computed: {},
+//监控data中的数据变化
+watch: {},
+//方法集合
+methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -87,10 +101,24 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-  }
+  },
+//生命周期 - 创建完成（可以访问当前this实例）
+created() {
+
+},
+//生命周期 - 挂载完成（可以访问DOM元素）
+mounted() {
+
+},
+beforeCreate() {}, //生命周期 - 创建之前
+beforeMount() {}, //生命周期 - 挂载之前
+beforeUpdate() {}, //生命周期 - 更新之前
+updated() {}, //生命周期 - 更新之后
+beforeDestroy() {}, //生命周期 - 销毁之前
+destroyed() {}, //生命周期 - 销毁完成
+activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
-
 <style scoped>
 .login {
   background: url("../assets/imges/login.jpg");
@@ -99,7 +127,7 @@ export default {
   position: fixed;
   background-size: 100% 100%;
 }
-.loginmenu {
+.loginmenu{
   width: 30%;
   height: auto;
   margin: 0 auto;
@@ -107,12 +135,5 @@ export default {
   text-align: center;
   background: #cdcccc60;
   padding: 20px 40px;
-}
-.help{
-  float: right;
-}
-.help li{
-  float: left;
-  padding: 0 16px;
 }
 </style>

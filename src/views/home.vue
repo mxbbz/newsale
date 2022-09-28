@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-09-27 22:28:36
+ * @Last Modified time: 2022-09-27 22:53:10
  */
 
 <template>
@@ -111,7 +111,7 @@ img {
   float: left;
   width: 235px;
   height: 400px;
-  background: #99a9bf border-box;
+  background: #d3dce6 border-box;
   border-radius: 5px;
 }
 .category h2 {
