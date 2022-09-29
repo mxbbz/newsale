@@ -9,18 +9,18 @@
       label-width="60px"
       class="demo-ruleForm"
     >
-      <el-form-item label="账号" prop="login">
+      <el-form-item label="账号" prop="name">
         <el-input
           type="login"
-          v-model="registerFrom.login"
+          v-model="registerFrom.name"
           autocomplete="off"
           maxlength="20"
         ></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
+      <el-form-item label="密码" prop="password">
         <el-input
           type="password"
-          v-model="registerFrom.pass"
+          v-model="registerFrom.password"
           autocomplete="off"
           maxlength="20"
         ></el-input>
@@ -46,9 +46,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="submitForm('registerFrom')"
-          >登录</el-button
-        >
+        <el-button type="primary" @click="submitForm">注册</el-button>
         <el-button @click="resetForm('registerFrom')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -56,60 +54,29 @@
 </template>
   
   <script>
+import AppVue from '../App.vue';
+
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 
-import { sendMsgApi } from '@/assets/api/login.js'
+
+
 export default {
 
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
-    var checkLogin = (rule, value, callback) => {
-
-      const reg = /^[_a-zA-Z0-9]+$/;
-      if (value == '' || value == undefined || value == null) {
-        callback();
-      } else {
-        if (!reg.test(value)) {
-          callback(new Error('仅由英文字母，数字以及下划线组成'));
-        } else {
-          callback();
-        }
-      }
-    };
-    var validatePhone = (rule, value, callback) => {
-      const reg = /^[1][3-9][0-9]{9}$/;
-      if (value == '' || value == undefined || value == null) {
-        callback();
-      } else {
-        if ((!reg.test(value)) && value != '') {
-          callback(new Error('请输入正确的电话号码'));
-        } else {
-          callback();
-        }
-      }
-    }
 
     //这里存放数据
     return {
       registerFrom: {
-        login: '',
-        pass: '',
+        name: '',
+        password: '',
         phone: '',
         code: ''
       },
-      activeName: 'login',
       rules: {
-        login: [
-          { validator: checkLogin, trigger: 'blur' }
-        ],
-        pass: [
-          { validator: checkLogin, trigger: 'blur' }
-        ],
-        phone: [
-          { validator: validatePhone, trigger: 'blur' }
-        ]
+
       }
     };
   },
@@ -119,17 +86,16 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+    async submitForm() {
+      let res = await this.$api.registerApi({ name: this.registerFrom.name, phone: this.registerFrom.phone, code: this.registerFrom.code, password: this.registerFrom.password })
+      if (String(res.code) === '1') {
+        this.$router.push(AppVue)
+      } else {
+        this.$message.error(res.msg)
+        this.loading = false
+      }
     },
-    resetForm(formName) {
+    resetForm(registerFrom) {
       this.$refs[formName].resetFields();
     },
     getCode() {
@@ -139,12 +105,13 @@ export default {
         alert("23")
         //this.form.code = (Math.random()*1000000).toFixed(0)
 
-        
+        this.$api.sendMsgApi({ phone: this.registerFrom.phone })
       } else {
 
       }
     },
   },
+
 
 }
   </script>

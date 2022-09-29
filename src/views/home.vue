@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-09-27 22:53:10
+ * @Last Modified time: 2022-09-29 23:23:59
  */
 
 <template>
@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style scoped>
 .home {
   background-color: #fff;
   margin-top: 40px;

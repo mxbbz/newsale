@@ -12,23 +12,23 @@
         label-width="60px"
         class="demo-ruleForm"
       >
-        <el-form-item label="账号" prop="login">
+        <el-form-item label="账号" prop="name">
           <el-input
             type="login"
-            v-model="loginForm.login"
+            v-model="loginForm.name"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
+        <el-form-item label="密码" prop="password">
           <el-input
             type="password"
-            v-model="loginForm.pass"
+            v-model="loginForm.password"
             autocomplete="off"
           ></el-input>
         </el-form-item>
          
         <el-form-item>
-          <el-button type="primary" @click="submitForm('loginForm')"
+          <el-button type="primary" @click="submitForm"
             >登录</el-button
           >
           <el-button @click="resetForm('loginForm')">重置</el-button>
@@ -50,6 +50,7 @@
 
 import register from '@/components/register.vue'
 import back from '@/components/back.vue'
+import AppVue from '../App.vue';
 export default {
   
 //import引入的组件需要注入到对象中才能使用
@@ -68,8 +69,8 @@ data() {
 //这里存放数据
 return {
   loginForm:{
-    login: '',
-    pass: ''
+    name: '',
+    password: ''
   },
   activeName:'login',
   rules: {
@@ -88,15 +89,16 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+  async submitForm() {
+      let res = await this.$api.loginApi({ name: this.loginForm.name,password: this.loginForm.password })
+      if (String(res.code) === '1') {
+        localStorage.setItem('userInfo', JSON.stringify(res.data))
+        this.$router.push(AppVue)
+        location.reload() 
+      } else {
+        this.$message.error(res.msg)
+        this.loading = false
+      }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

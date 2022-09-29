@@ -1,14 +1,13 @@
 <template>
   <div id="app" class="app">
     <!--顶部导航栏-->
-    <el-container>
     <div class="topbar">
       <div class="wrapper">
       <ul class="menu">
-          <li v-if="user">
-            <router-link to="userinfo">你好 {{ user.name }}</router-link>
+          <li >
+            <router-link to="userinfo">你好 {{ userInfo.name }}</router-link>
           </li>
-          <li v-else>
+          <li >
             <router-link to="/login">请登录..</router-link>
           </li>
           <li>
@@ -26,7 +25,6 @@
         </ul>
       </div>
     </div>
-      <el-header>
 
 
 <!-- logo搜索区 -->
@@ -66,9 +64,8 @@
           </div>
         </div>
       </div>
-    </el-header>
     
-    <router-view />
+    <router-view></router-view>
       <div class="footer">
         <el-footer>
           <div class="wrappe">
@@ -76,7 +73,7 @@
           </div>
         </el-footer>
       </div>
-  </el-container>
+
   
 </div>
 
@@ -91,13 +88,19 @@ export default {
   name: 'App',
   data() {
     return {
-      user: false,
+      user: '',
       activeName: 'second'
     }
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    }
+  },
+  created(){
+    if (localStorage.getItem("user")) {
+      // 如果已经登录，设置vuex登录状态
+      this.setUser(JSON.parse(localStorage.getItem("user")));
     }
   }
 }
@@ -115,13 +118,8 @@ export default {
   border: 0;
   list-style: none;
 }
-#app .el-header {
-  padding: 0;
-}
-a,
-a:hover {
-  text-decoration: none;
-}
+
+
 /* 顶端css */
 .topbar {
   height: 52px;
