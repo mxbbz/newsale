@@ -92,7 +92,7 @@ methods: {
   async submitForm() {
       let res = await this.$api.loginApi({ name: this.loginForm.name,password: this.loginForm.password })
       if (String(res.code) === '1') {
-        localStorage.setItem('userInfo', JSON.stringify(res.data))
+        localStorage.setItem('userInfo', JSON.stringify(res.map.user))
         this.$router.push(AppVue)
         location.reload() 
       } else {

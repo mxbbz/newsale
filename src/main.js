@@ -10,10 +10,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 Vue.prototype.axios = axios
-
+import store from 'store'
 import api from './assets/api/index.js';
 Vue.prototype.$api = api;
 
+axios.defaults.withCredentials = true
 
 
 Vue.use(ElementUI)
@@ -21,6 +22,7 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

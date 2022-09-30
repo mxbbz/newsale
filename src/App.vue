@@ -4,10 +4,10 @@
     <div class="topbar">
       <div class="wrapper">
       <ul class="menu">
-          <li >
-            <router-link to="userinfo">你好 {{ userInfo.name }}</router-link>
+          <li v-if="loginStaus">
+            <router-link to="/userInfo">{{user}}</router-link>
           </li>
-          <li >
+          <li v-else>
             <router-link to="/login">请登录..</router-link>
           </li>
           <li>
@@ -88,7 +88,8 @@ export default {
   name: 'App',
   data() {
     return {
-      user: '',
+      userName: '',
+      loginStaus: false,
       activeName: 'second'
     }
   },
@@ -97,11 +98,17 @@ export default {
       console.log(tab, event);
     }
   },
-  created(){
-    if (localStorage.getItem("user")) {
-      // 如果已经登录，设置vuex登录状态
-      this.setUser(JSON.parse(localStorage.getItem("user")));
-    }
+  created() {
+
+      let userName = localStorage.getItem('userInfo')
+      userName= userName.replace(/\"/g, "");
+ 
+      if(userName) {
+        this.loginStaus=true
+				//userName.username==user.username  对应登录界面设置的key里面的value对应的数组值
+				this.user = userName
+			}
+    
   }
 }
 </script>
@@ -141,7 +148,7 @@ export default {
 /* logo */
 .logo {
   float: left;
-  height: 120px;
+  height: 100px;
   width: 100%;
   background-color: #FFF;
 }
