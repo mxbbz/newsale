@@ -99,14 +99,13 @@ export default {
     }
   },
   created() {
-
+    
       let userName = localStorage.getItem('userInfo')
-      userName= userName.replace(/\"/g, "");
- 
+      userName=JSON.parse(userName)
       if(userName) {
         this.loginStaus=true
 				//userName.username==user.username  对应登录界面设置的key里面的value对应的数组值
-				this.user = userName
+				this.user = userName.name
 			}
     
   }

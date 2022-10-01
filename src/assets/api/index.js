@@ -20,6 +20,20 @@ const api = {
       method: 'post',
       data: data
     })
+  },
+  saveUserInfo(data) {
+    return request({
+      url: 'api/user/saveUserInfo',
+      method: 'post',
+      data
+    })
+  },
+  getAddress(id) {
+    return request({
+      url: `api/user/getAddressBook/${id}`,
+      method: 'get',
+    })
   }
+
 }
 export default api;

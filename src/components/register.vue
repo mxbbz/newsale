@@ -89,7 +89,7 @@ export default {
     async submitForm() {
       let res = await this.$api.registerApi({ name: this.registerFrom.name, phone: this.registerFrom.phone, code: this.registerFrom.code, password: this.registerFrom.password })
       if (String(res.code) === '1') {
-        this.$router.push(AppVue)
+        location.reload() 
       } else {
         this.$message.error(res.msg)
         this.loading = false
