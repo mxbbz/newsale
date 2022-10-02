@@ -7,28 +7,23 @@
 <template>
   
   <div class="address">
-    <div class="card-header" style="text-align: left">
-          <span>管理地址</span>
-          <el-button class="button" @click="addAddress=true">新增</el-button>
-        </div>
-    <el-table :data="tableData" :fit='false'>
-      
-      <el-table-column  label="姓名"> </el-table-column>
-      <el-table-column label="手机号" width="120px"></el-table-column>
-      <el-table-column label="省市" width="140px"> </el-table-column>
-      <el-table-column  label="详细地址"> </el-table-column>
-      <el-table-column label="邮编"> </el-table-column>
-      
-      <el-table-column label="操作" width="300px">
+    <el-button>默认按钮</el-button>
+    <el-table :data="tableData" class="table" height="440px">
+      <el-table-column  label="姓名" prop="consignee" > </el-table-column>
+      <el-table-column label="手机号" prop="phone" width="120px"></el-table-column>
+      <el-table-column label="省市" prop="province"> </el-table-column>
+      <el-table-column  label="详细地址" prop="detail"> </el-table-column>
+      <el-table-column  label="邮编" prop="zip"> </el-table-column>
+      <el-table-column label="操作" width="300px" >
         <template>
-          <el-button>默认地址</el-button>
+          <el-button >默认地址</el-button>
           <el-button>编辑</el-button>
           <el-button>删除</el-button>
         </template>
+        
       </el-table-column>
       
     </el-table>
-    <el-input v-if="addAddress" v-model="addData.name" placeholder="请输入内容"/>
   </div>
 </template>
 
@@ -43,22 +38,7 @@ export default {
     //这里存放数据
     return {
       addAddress: false,
-      tableData: [{
-        consignee: '',
-        phone: '',
-        province: '',
-        detail: '',
-        zip: 0,
-        isDefault: 0
-    }],
-    addData: [{
-       consignee: '',
-        phone: '',
-        province: '',
-        detail: '',
-        zip: '',
-        fit: 'false'
-    }]
+      tableData: [],
     };
   },
   //监听属性 类似于data概念
@@ -71,11 +51,14 @@ export default {
       let userName = localStorage.getItem('userInfo')
       userName = JSON.parse(userName)
       let id=userName.id
-      let res = this.$api.getAddress(id)
-      if (String(res.code) === '1') {
-        this.tableData.push(res.data)
-      }
-    }
+      this.$api.getAddress(id).then(res => {
+        if (String(res.code) === '1') {
+          this.tableData = res.data || []
+          
+        }
+      }) 
+    },
+
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -103,5 +86,13 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
+.table{
+  position: relative;
+  width: 100%;
+  overflow: auto;
+}
+.button{
+  float: right;
+  margin-top: 20px;
+}
 </style>
