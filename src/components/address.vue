@@ -7,22 +7,104 @@
 <template>
   
   <div class="address">
-    <el-button>默认按钮</el-button>
-    <el-table :data="tableData" class="table" height="440px">
-      <el-table-column  label="姓名" prop="consignee" > </el-table-column>
-      <el-table-column label="手机号" prop="phone" width="120px"></el-table-column>
-      <el-table-column label="省市" prop="province"> </el-table-column>
-      <el-table-column  label="详细地址" prop="detail"> </el-table-column>
-      <el-table-column  label="邮编" prop="zip"> </el-table-column>
-      <el-table-column label="操作" width="300px" >
-        <template>
-          <el-button >默认地址</el-button>
-          <el-button>编辑</el-button>
-          <el-button>删除</el-button>
-        </template>
-        
+    <div class="card-header" style="text-align: left">
+          <span>管理地址</span>
+          <el-button class="button" type="text" @click="addAddress">新增</el-button>
+        </div>
+    <el-table :data="tableData" class="table" height="370px">
+      <el-table-column label="姓名">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.isAdd">
+                      <el-input
+                              size="mini"
+                              v-model="scope.row.consignee"
+                      ></el-input>
+                  </span>
+                  <span v-else>
+                      {{ scope.row.consignee }}
+                  </span>
+              </template>
+          </el-table-column>
+      <el-table-column label="手机号" prop="phone" width="120px">
+        <template slot-scope="scope">
+                  <span v-if="scope.row.isAdd">
+                      <el-input
+                              size="mini"
+                              v-model="scope.row.phone"
+                      ></el-input>
+                  </span>
+                  <span v-else>
+                      {{ scope.row.phone }}
+                  </span>
+              </template>
       </el-table-column>
-      
+      <el-table-column label="省市" prop="province"> 
+        <template slot-scope="scope">
+                  <span v-if="scope.row.isAdd">
+                      <el-input
+                              size="mini"
+                              v-model="scope.row.province"
+                      ></el-input>
+                  </span>
+                  <span v-else>
+                      {{ scope.row.province }}
+                  </span>
+              </template>
+      </el-table-column>
+      <el-table-column  label="详细地址" prop="detail">
+        <template slot-scope="scope">
+                  <span v-if="scope.row.isAdd">
+                      <el-input
+                              size="mini"
+                              v-model="scope.row.detail"
+                      ></el-input>
+                  </span>
+                  <span v-else>
+                      {{ scope.row.detail }}
+                  </span>
+              </template> 
+            </el-table-column>
+      <el-table-column  label="邮编" prop="zip">
+        <template slot-scope="scope">
+                  <span v-if="scope.row.isAdd">
+                      <el-input
+                              size="mini"
+                              v-model="scope.row.zip"
+                      ></el-input>
+                  </span>
+                  <span v-else>
+                      {{ scope.row.zip }}
+                  </span>
+              </template> 
+             </el-table-column>
+
+             <el-table-column  label="默认地址">
+             <template #default="scope">
+              <span v-if="scope.row.isAdd">
+              <el-checkbox
+                    v-model= scope.row.adisdefault
+                    :true-label = "1"
+                    :false-label = "0"
+                    
+                    @change="changetest"/>
+              </span>
+          <el-tag  v-if="scope.row.isDefault==1" type="success" size="mini" >默认</el-tag>
+
+          </template>
+          </el-table-column>
+
+      <el-table-column label="操作" width="270px" >
+        <template #default="scope">
+          <span v-if="scope.row.isAdd">
+            <el-button>保存</el-button>
+            </span>
+          <el-button v-else @click="editAddress(scope.$index)">编辑</el-button>
+          <span v-if="scope.row.isAdd">
+            <el-button @click="cancelEdit(scope.$index)">取消</el-button>
+            </span>
+          <el-button v-else>删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -37,12 +119,12 @@ export default {
   data() {
     //这里存放数据
     return {
-      addAddress: false,
-      tableData: [],
+      tableData: [{isAdd:false}],
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
@@ -54,11 +136,18 @@ export default {
       this.$api.getAddress(id).then(res => {
         if (String(res.code) === '1') {
           this.tableData = res.data || []
-          
         }
       }) 
     },
-
+    addAddress(){
+      this.tableData.unshift({isAdd:true})
+    },
+    editAddress(index){
+      this.$set(this.tableData[index],'isAdd','true')
+    },
+    cancelEdit(index){
+      this.tableData[index].isAdd=false
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -95,4 +184,4 @@ export default {
   float: right;
   margin-top: 20px;
 }
-</style>
+</style>	  
