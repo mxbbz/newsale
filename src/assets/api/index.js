@@ -33,6 +33,26 @@ const api = {
       url: `api/user/getAddressBook/${id}`,
       method: 'get',
     })
+  },
+  deleteAddress(data) {
+    return request({
+      url: 'api/user/deleteAddress',
+      method: 'put',
+      data
+    })
+  },
+  saveAddress(data) {
+    return request({
+      url: 'api/user/saveAddress',
+      method: 'post',
+      data
+    })
+  },
+  getList() {
+    return request({
+      url: 'api/product/getRecentList',
+      method: 'get',
+    })
   }
 
 }

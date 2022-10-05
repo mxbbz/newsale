@@ -176,7 +176,9 @@ export default {
 }
 /* 尾页 */
 .footer{
+  
   height: 260px;
   background-color: #333;
+
 }
 </style>

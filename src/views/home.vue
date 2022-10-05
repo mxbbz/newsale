@@ -2,7 +2,8 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-09-29 23:23:59
+ * @Last Modified time: 2022-10-05 23:53:59
+ * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
 <template>
@@ -43,6 +44,36 @@
       </div>
     
     </el-main>
+    
+    <div class="list">
+      
+      <div class="wrapper">
+        <ul>
+          <li>
+            <el-image
+      style="width: 234px; height: 280px"
+      :src="latestimges"
+      ></el-image>
+          </li>
+      <li v-for="item in recent" :key="item.product_id">
+        <router-link :to="{ path: '/goods/details', query: {productID:item.productID} }">
+          <div class="img"><img :src="item.productPicture"  alt /></div>
+          
+          <h2><el-tag  v-if="item.productBrandNew==1" type="success" size="mini" >全新</el-tag>
+          <el-tag  v-if="item.productFreeShipping==1" type="success" size="mini" >包邮</el-tag>{{item.productName}}</h2>
+          <h3>{{item.productTitle}}</h3>
+          <p>
+            <span>{{item.productSellingPrice}}元</span>
+            <span
+              v-show="item.productPrice != item.productSellingPrice"
+              class="del"
+            >{{item.productPrice}}元</span>
+          </p>
+        </router-link>
+      </li>
+      </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -50,20 +81,35 @@ export default {
   name: 'home',
   data() {
     return {
+      latestimges: require('../assets/imges/new.jpg'),
+      latestMerchandise: [],
       imagebox: [
         { id: 0, idView: require('../assets/imges/banner.jpg') },
         { id: 1, idView: require('../assets/imges/banner2.jpg') },
         { id: 2, idView: require('../assets/imges/banner3.jpg') },
       ],
       // 浏览器宽度
-      screenWidth: 0
+      screenWidth: 0,
+      recent: [],
     }
   },
+  created() {
+    this.getList()
+},
   methods: {
     setSize: function () {
       // 通过浏览器宽度(图片宽度)计算高度
       this.bannerHeight = 390 / 1920 * this.screenWidth;
     },
+    getList(){
+      this.$api.getList().then((res)=>{
+
+      if (String(res.code) === '1') {
+        this.recent = res.data || []
+      }
+      })
+
+    }
   },
   mounted() {
     // 首次加载时,需要调用一次
@@ -127,6 +173,69 @@ img {
 }
 .categorymenu a {
   margin-top: 15px;
+}
+/* 商品展示 */
+/* 以下样式来自于 https://gitee.com/hai-27/vue-store*/
+a {
+  text-decoration: none;
+}
+.list {
+  background-color: #F5F5F5;
+  width: auto;
+  height: 700px;
+
+
+}
+.list ul li {
+  float: left;
+  width: 234px;
+  height: 280px;
+  padding: 10px 0;
+  margin: 20px 0 0px 12px;
+  background-color: white;
+}
+.list ul li:hover {
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+
+.list ul li img{
+  width: 170px;
+  height: 200px;
+  margin: 0 0 0 30px;
+}
+.list ul li h2 {
+
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.list ul li h3 {
+  margin: 5px 10px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #b0b0b0;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.list ul li p {
+  margin: 10px 10px 10px;
+  text-align: center;
+  color: #ff6700;
+}
+.list ul li p .del {
+  margin-left: 0.5em;
+  color: #b0b0b0;
+  text-decoration: line-through;
 }
 </style>
 

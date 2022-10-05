@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-30 23:09:25 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-01 21:09:53
+ * @Last Modified time: 2022-10-04 21:20:03
  */
 
 <template>
@@ -53,6 +53,10 @@
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="收货地址"><Address></Address></el-tab-pane>
+          <el-tab-pane label="账号管理">
+            <el-button type="primary"  @click="switchAccounts">切换账号</el-button>
+            <el-button type="danger"  @click="signOut">退出登录</el-button>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -61,6 +65,7 @@
 
 <script>
 import Address from '../components/address.vue';
+
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 export default {
@@ -97,8 +102,19 @@ export default {
       }else{
         this.$message.error(res.msg)
       }
-    }
+    },
+    switchAccounts(){
+    localStorage.setItem("userInfo", "");
+    this.$router.push({ path: "/login"})
+    location.reload() 
   },
+  signOut(){
+    localStorage.setItem("userInfo", "");
+    this.$router.push({ path: "/"})
+    location.reload() 
+  },
+  },
+  
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     let userName = localStorage.getItem('userInfo')
@@ -136,8 +152,9 @@ export default {
   height: auto;
   margin: 0 auto;
   text-align: center;
-  background: #cdcccc60;
+  background: #F5F5F5;
   padding: 20px 40px;
+
 }
 .infoList {
   margin-top: 40px;
