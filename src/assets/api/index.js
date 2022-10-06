@@ -53,6 +53,18 @@ const api = {
       url: 'api/product/getRecentList',
       method: 'get',
     })
+  },
+  getDetails(id) {
+    return request({
+      url: `api/product/getDetails/${id}`,
+      method: 'get',
+    })
+  },
+  getPicture(id) {
+    return request({
+      url: `api/product/getPicture/${id}`,
+      method: 'get',
+    })
   }
 
 }

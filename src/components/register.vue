@@ -102,8 +102,7 @@ export default {
       this.registerFrom.code = ''
       const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
       if (regex.test(this.registerFrom.phone)) {
-        alert("23")
-        //this.form.code = (Math.random()*1000000).toFixed(0)
+
 
         this.$api.sendMsgApi({ phone: this.registerFrom.phone })
       } else {

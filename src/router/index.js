@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
 import UserInfo from '../views/userInfo'
+import Details from '../views/details'
 Vue.use(Router)
 
 export default new Router({
@@ -21,6 +22,11 @@ export default new Router({
       path: '/userInfo',
       name: 'userInfo',
       component: UserInfo
+    },
+    {
+      path: '/goods/details',
+      name: 'details',
+      component: Details
     },
   ]
 })

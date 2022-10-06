@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-05 23:53:59
+ * @Last Modified time: 2022-10-06 22:51:22
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -56,7 +56,7 @@
       ></el-image>
           </li>
       <li v-for="item in recent" :key="item.product_id">
-        <router-link :to="{ path: '/goods/details', query: {productID:item.productID} }">
+        <router-link :to="{ path: '/goods/details', query: {productId:item.productId} }">
           <div class="img"><img :src="item.productPicture"  alt /></div>
           
           <h2><el-tag  v-if="item.productBrandNew==1" type="success" size="mini" >全新</el-tag>
