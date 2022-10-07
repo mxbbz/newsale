@@ -41,11 +41,17 @@ const api = {
       data
     })
   },
-  saveAddress(data) {
+  saveAddress(id) {
     return request({
       url: 'api/user/saveAddress',
       method: 'post',
       data
+    })
+  },
+  getUserInfo(userId) {
+    return request({
+      url: `api/user/getUserInfo/${userId}`,
+      method: 'get',
     })
   },
   getList() {
@@ -64,6 +70,13 @@ const api = {
     return request({
       url: `api/product/getPicture/${id}`,
       method: 'get',
+    })
+  },
+  addShoppingCart(data) {
+    return request({
+      url: 'api/product/addShoppingCart',
+      method: 'post',
+      data
     })
   }
 
