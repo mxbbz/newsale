@@ -2,7 +2,7 @@
 <div class='c'>
   <div class="wrapper">
     <div class="orderList">
-      <p>{{productDetails.product_name}}</p>
+      <p>{{productDetails.productName}}</p>
       <p>11212</p>
     </div>
   </div>
@@ -32,8 +32,7 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-  this.productDetails=this.$router.params.productDetails
-  console.log(productDetails)
+  this.productDetails=this.$route.params.productDetails
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {

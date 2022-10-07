@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-07 23:47:53
+ * @Last Modified time: 2022-10-07 23:55:09
  */
 
 <template>
@@ -83,10 +83,10 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import confirmOrder from './confirmOrder.vue'
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {},
+  components: {confirmOrder},
   data() {
     //这里存放数据
     return {
@@ -140,7 +140,7 @@ export default {
       }))
     },
     toConfirmOrder(){
-      this.$router.push({ path:"/confirmOrder",params:{productDetails:this.productDetails}})
+      this.$router.push({ name:"confirmOrder",params:{productDetails:this.productDetails}})
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
