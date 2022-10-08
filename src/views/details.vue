@@ -166,7 +166,7 @@ export default {
 <style  scoped>
 .background {
   height: 600px;
-  background-color: #e9f1f6;
+
 }
 .block {
   float: left;
@@ -175,6 +175,8 @@ export default {
 }
 .details {
   margin: 70px;
+  background-color: #F5F5F5;
+  margin-top: 120px;
 }
 .details p {
   margin: 10px 10px 10px;
@@ -189,7 +191,7 @@ export default {
   float: right;
   width: 150px;
   height: 300px;
-  background-color: #f0fcff;
+  background-color: #FFF;
   margin-top: 70px;
 }
 </style>

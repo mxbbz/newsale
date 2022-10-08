@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-06 22:51:22
+ * @Last Modified time: 2022-10-08 23:40:15
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -12,7 +12,42 @@
       <div class="wrapper">
         <!-- 左侧分类菜单 -->
         <div class="category">
-          <h2>分类</h2>
+          <div class="button">
+            <el-button
+              size="medium "
+              type="primary"
+              @click="dialogVisible = true"
+              ><i class="el-icon-upload2">发布闲置</i></el-button
+            >
+            <el-dialog
+              title="上传闲置"
+              :visible.sync="dialogVisible"
+              width="30%"
+              center
+            >
+              <el-form ref="form" :model="uploadData" label-width="80px">
+                <el-form-item label="商品名">
+                  <el-input v-model="product_name"></el-input>
+                </el-form-item>
+
+                <div class="block">
+                  <span class="demonstration">默认 click 触发子菜单</span>
+                  <el-cascader
+                    v-model="value"
+                    :options="options"
+                    @change="handleChange"
+                  ></el-cascader>
+                </div>
+              </el-form>
+
+              <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false"
+                  >确 定</el-button
+                >
+                <el-button @click="dialogVisible = false">取 消</el-button>
+              </span>
+            </el-dialog>
+          </div>
           <div class="categorymenu">
             <el-link icon="el-icon-s-goods">全部商品</el-link>
             <br />
@@ -42,45 +77,65 @@
           </el-carousel>
         </div>
       </div>
-    
     </el-main>
-    
+
     <div class="list">
-      
       <div class="wrapper">
         <ul>
           <li>
             <el-image
-      style="width: 234px; height: 280px"
-      :src="latestimges"
-      ></el-image>
+              style="width: 234px; height: 280px"
+              :src="latestimges"
+            ></el-image>
           </li>
-      <li v-for="item in recent" :key="item.product_id">
-        <router-link :to="{ path: '/goods/details', query: {productId:item.productId} }">
-          <div class="img"><img :src="item.productPicture"  alt /></div>
-          
-          <h2><el-tag  v-if="item.productBrandNew==1" type="success" size="mini" >全新</el-tag>
-          <el-tag  v-if="item.productFreeShipping==1" type="success" size="mini" >包邮</el-tag>{{item.productName}}</h2>
-          <h3>{{item.productTitle}}</h3>
-          <p>
-            <span>{{item.productSellingPrice}}元</span>
-            <span
-              v-show="item.productPrice != item.productSellingPrice"
-              class="del"
-            >{{item.productPrice}}元</span>
-          </p>
-        </router-link>
-      </li>
-      </ul>
+          <li v-for="item in recent" :key="item.product_id">
+            <router-link
+              :to="{
+                path: '/goods/details',
+                query: { productId: item.productId },
+              }"
+            >
+              <div class="img"><img :src="item.productPicture" alt /></div>
+
+              <h2>
+                <el-tag
+                  v-if="item.productBrandNew == 1"
+                  type="success"
+                  size="mini"
+                  >全新</el-tag
+                >
+                <el-tag
+                  v-if="item.productFreeShipping == 1"
+                  type="success"
+                  size="mini"
+                  >包邮</el-tag
+                >{{ item.productName }}
+              </h2>
+              <h3>{{ item.productTitle }}</h3>
+              <p>
+                <span>{{ item.productSellingPrice }}元</span>
+                <span
+                  v-show="item.productPrice != item.productSellingPrice"
+                  class="del"
+                  >{{ item.productPrice }}元</span
+                >
+              </p>
+            </router-link>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
+
 export default {
   name: 'home',
+  comments: {},
   data() {
     return {
+      uploadData: [],
+      dialogVisible: false,
       latestimges: require('../assets/imges/new.jpg'),
       latestMerchandise: [],
       imagebox: [
@@ -95,21 +150,21 @@ export default {
   },
   created() {
     this.getList()
-},
+  },
   methods: {
     setSize: function () {
       // 通过浏览器宽度(图片宽度)计算高度
       this.bannerHeight = 390 / 1920 * this.screenWidth;
     },
-    getList(){
-      this.$api.getList().then((res)=>{
+    getList() {
+      this.$api.getList().then((res) => {
 
-      if (String(res.code) === '1') {
-        this.recent = res.data || []
-      }
+        if (String(res.code) === '1') {
+          this.recent = res.data || []
+        }
       })
+    },
 
-    }
   },
   mounted() {
     // 首次加载时,需要调用一次
@@ -153,6 +208,9 @@ img {
   width: 100%;
   height: inherit;
 }
+.button {
+  text-align: center;
+}
 .category {
   float: left;
   width: 235px;
@@ -180,11 +238,9 @@ a {
   text-decoration: none;
 }
 .list {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   width: auto;
   height: 700px;
-
-
 }
 .list ul li {
   float: left;
@@ -201,13 +257,12 @@ a {
   transform: translate3d(0, -2px, 0);
 }
 
-.list ul li img{
+.list ul li img {
   width: 170px;
   height: 200px;
   margin: 0 0 0 30px;
 }
 .list ul li h2 {
-
   font-size: 14px;
   font-weight: 400;
   color: #333;

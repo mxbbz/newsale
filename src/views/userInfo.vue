@@ -146,6 +146,7 @@ export default {
 <style scoped>
 .userInfo {
   height: 700px;
+  
 }
 .info {
   width: 60%;

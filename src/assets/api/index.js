@@ -78,6 +78,13 @@ const api = {
       method: 'post',
       data
     })
+  },
+  addOrder(data) {
+    return request({
+      url: 'api/product/addOrder',
+      method: 'post',
+      data
+    })
   }
 
 }
