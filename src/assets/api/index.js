@@ -85,6 +85,12 @@ const api = {
       method: 'post',
       data
     })
+  },
+  getCategory() {
+    return request({
+      url: 'api/product/list/tree',
+      method: 'get',
+    })
   }
 
 }

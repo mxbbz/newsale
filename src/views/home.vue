@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-08 23:40:15
+ * @Last Modified time: 2022-10-09 00:58:35
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -30,14 +30,14 @@
                   <el-input v-model="product_name"></el-input>
                 </el-form-item>
 
-                <div class="block">
-                  <span class="demonstration">默认 click 触发子菜单</span>
+                  <span class="demonstration">商品类型</span>
                   <el-cascader
-                    v-model="value"
-                    :options="options"
+                    v-model="data"
+                    :options="uploadData"
+                    :props="listTree"
                     @change="handleChange"
+                    @visible-change="getCategory"
                   ></el-cascader>
-                </div>
               </el-form>
 
               <span slot="footer" class="dialog-footer">
@@ -134,7 +134,14 @@ export default {
   comments: {},
   data() {
     return {
+      data: [],
       uploadData: [],
+      listTree: {
+        label: 'name',
+        children: 'children',
+        value: 'id',
+       },
+      category: [],
       dialogVisible: false,
       latestimges: require('../assets/imges/new.jpg'),
       latestMerchandise: [],
@@ -164,6 +171,17 @@ export default {
         }
       })
     },
+    getCategory(){
+      this.$api.getCategory().then((res=>{
+        this.uploadData=res.data || []
+        console.log(this.uploadData)
+      }))
+    },
+    handleChange(itemIdArr){
+    //获取id
+    let val=itemIdArr[itemIdArr.length-1]
+      console.log(val)
+    }
 
   },
   mounted() {
