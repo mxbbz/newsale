@@ -91,6 +91,13 @@ const api = {
       url: 'api/product/list/tree',
       method: 'get',
     })
+  },
+  addFrom(data) {
+    return request({
+      url: 'api/product/addFrom',
+      method: 'post',
+      data
+    })
   }
 
 }
