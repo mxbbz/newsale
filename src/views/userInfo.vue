@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-30 23:09:25 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-04 21:20:03
+ * @Last Modified time: 2022-10-10 23:33:15
  */
 
 <template>
@@ -22,7 +22,39 @@
                   :size="120"
                   :src="info.avatar"
                   style="margin-left: 70px"
-                />
+                ></el-avatar>
+                <el-button type="text" @click="centerDialogVisible = true"
+                  ><i class="el-icon-camera"></i>修改头像</el-button
+                >
+
+                <el-dialog
+                  title="上传头像"
+                  :visible.sync="centerDialogVisible"
+                  width="30%"
+                  center
+                >
+                  <el-upload
+                    class="avatar-uploader"
+                    action="http://localhost:8080/api/oss/policy/uploadAvator?module=Heads"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                  >
+                    <img v-if="info.avatar" :src="info.avatar" class="avatar" />
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button
+                      type="primary"
+                      @click="centerDialogVisible = false"
+                      >确 定</el-button
+                    >
+                    <el-button @click="centerDialogVisible = false"
+                      >取 消</el-button
+                    >
+                  </span>
+                </el-dialog>
+
                 <el-form
                   ref="form"
                   :model="info"
@@ -54,8 +86,10 @@
           </el-tab-pane>
           <el-tab-pane label="收货地址"><Address></Address></el-tab-pane>
           <el-tab-pane label="账号管理">
-            <el-button type="primary"  @click="switchAccounts">切换账号</el-button>
-            <el-button type="danger"  @click="signOut">退出登录</el-button>
+            <el-button type="primary" @click="switchAccounts"
+              >切换账号</el-button
+            >
+            <el-button type="danger" @click="signOut">退出登录</el-button>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -70,11 +104,13 @@ import Address from '../components/address.vue';
 //例如：import 《组件名称》 from '《组件路径》';
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {Address},
+  components: { Address },
   data() {
     //这里存放数据
     return {
       // tabs方向
+      imageUrl: '',
+      centerDialogVisible: false,
       tabPosition: 'left',
       info: {
         id: '',
@@ -99,36 +135,53 @@ export default {
       let res = await this.$api.saveUserInfo(this.info)
       if (String(res.code) === '1') {
         this.$message.success("保存成功")
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
     },
-    switchAccounts(){
-    localStorage.setItem("userInfo", "");
-    this.$router.push({ path: "/login"})
-    location.reload() 
+    switchAccounts() {
+      localStorage.setItem("userInfo", "");
+      this.$router.push({ path: "/login" })
+      location.reload()
+    },
+    signOut() {
+      localStorage.setItem("userInfo", "");
+      this.$router.push({ path: "/" })
+      location.reload()
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.info.avatar = res.data
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    getUserInfo(id) {
+      this.$api.getUserInfo(id).then((res => {
+        if (String(res.code) === '1') {
+          this.info = res.data
+        }
+      }))
+    }
+
   },
-  signOut(){
-    localStorage.setItem("userInfo", "");
-    this.$router.push({ path: "/"})
-    location.reload() 
-  },
-  },
-  
+
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     let userName = localStorage.getItem('userInfo')
     userName = JSON.parse(userName)
-    if (userName) {
-      this.loginStaus = true
-      //userName.username==user.username  对应登录界面设置的key里面的value对应的数组值
-      this.info.name = userName.name
-      this.info.sex = userName.sex
-      this.info.avatar = userName.avatar
-      this.info.phone = userName.phone
-      this.info.signature = userName.signature
-      this.info.id=userName.id
-    }
+
+    this.getUserInfo(userName.id)
+
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
@@ -146,18 +199,39 @@ export default {
 <style scoped>
 .userInfo {
   height: 700px;
-  
 }
 .info {
   width: 60%;
   height: auto;
   margin: 0 auto;
   text-align: center;
-  background: #F5F5F5;
+  background: #f5f5f5;
   padding: 20px 40px;
-
 }
 .infoList {
   margin-top: 40px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

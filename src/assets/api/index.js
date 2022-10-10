@@ -98,7 +98,15 @@ const api = {
       method: 'post',
       data
     })
-  }
+  },
+  addProductPicture(data) {
+    return request({
+      url: 'api/productBlock/addProductBlock',
+      method: 'post',
+      data: data
+    })
+  },
+
 
 }
 export default api;

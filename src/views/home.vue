@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-09 17:29:41
+ * @Last Modified time: 2022-10-10 23:33:09
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -37,7 +37,6 @@
 
                 <el-form-item label="商品类型">
                   <el-cascader
-                    v-model="uploadData.category_id"
                     :options="data"
                     :props="listTree"
                     @change="handleChange"
@@ -45,20 +44,20 @@
                   ></el-cascader>
                 </el-form-item>
                 <el-form-item label="商品标题">
-                  <el-input v-model="uploadData.product_title"></el-input>
+                  <el-input v-model="uploadData.productTitle"></el-input>
                 </el-form-item>
                 <el-form-item label="商品原价">
-                  <el-input v-model="uploadData.product_price"></el-input>
+                  <el-input v-model="uploadData.productPrice"></el-input>
                 </el-form-item>
 
                 <el-form-item label="出售价格">
-                  <el-input v-model="uploadData.product_selling_price"></el-input>
+                  <el-input v-model="uploadData.productSellingPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="包邮">
                   <el-switch
                     :active-value="1"
                     :inactive-value="0"
-                    v-model="uploadData.product_free_shipping"
+                    v-model="uploadData.productFreeShipping"
                   ></el-switch>
                 </el-form-item>
 
@@ -66,39 +65,34 @@
                   <el-switch
                     :active-value="1"
                     :inactive-value="0"
-                    v-model="uploadData.product_brand_new"
+                    v-model="uploadData.productBrandNew"
                   ></el-switch>
                 </el-form-item>
 
-                product_picture
                 <el-form-item label="图片">
                   <el-upload
-  class="avatar-uploader"
-  action="http://localhost:8080/api/oss/policy/uploadAvator"
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="uploadData.avator" :src="uploadData.avator" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-</el-upload>
-
+                    class="avatar-uploader"
+                    action="http://localhost:8080/api/oss/policy/uploadAvator?module=product"
+                    list-type="picture-card"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                  >
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
                 </el-form-item>
                 <el-form-item label="介绍">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="uploadData.product_intro"
+                    v-model="uploadData.productIntro"
                   >
                   </el-input>
                 </el-form-item>
-                
               </el-form>
 
               <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="addFrom"
-                  >确 定</el-button
-                >
+                <el-button type="primary" @click="addFrom">确 定</el-button>
                 <el-button @click="dialogVisible = false">取 消</el-button>
               </span>
             </el-dialog>
@@ -190,6 +184,7 @@ export default {
   data() {
     return {
       data: [],
+      productPictures: [],
       uploadData: {
       },
       listTree: {
@@ -233,31 +228,45 @@ export default {
         console.log(this.uploadData)
       }))
     },
-    addFrom(){
-      this.$api.addFrom(this.uploadData).then((res=>{
+    addFrom() {
+      let userInfo = localStorage.getItem('userInfo')
+      userInfo = JSON.parse(userInfo)
+      this.uploadData.productUserId = userInfo.id
+      this.uploadData.productPicture = this.productPictures[0]
+      this.$api.addFrom(this.uploadData).then((res => {
+
         if (String(res.code) === '1') {
-          alert("上传成功")
+          this.$message.success("发布成功")
+          this.dialogVisible = false;
+
+          this.uploadData = {}
+          this.data = []
+
+          this.$api.addProductPicture({ url: this.productPictures, productId: res.data.productId })
+          this.productPictures = []
         }
       }))
     },
-    handleChange(item){
-      this.uploadData.categoryId=item[2]
+    handleChange(item) {
+      this.uploadData.categoryId = item[2]
       console.log(item)
     },
-    	  //文件上传成功
-        handleAvatarSuccess(res, file) {
-        this.$message.success("图片修改成功！")
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      //限制用户上传的图片格式和大小
-      beforeAvatarUpload(file) {
-        const isLt2M = file.size / 1024 / 1024 < 10;
+    //文件上传成功
+    handleAvatarSuccess(res, file) {
+      this.$message.success("图片修改成功！")
+      // this.uploadData.productPicture = URL.createObjectURL(file.raw);
+      this.productPictures.push(res.data)
+      console.log(this.productPictures)
+    },
+    //限制用户上传的图片格式和大小
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
 
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 10MB!');
-        }
-        return isLt2M;
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 10MB!');
       }
+      return isLt2M;
+    }
 
   },
   mounted() {
