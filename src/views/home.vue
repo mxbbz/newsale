@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-10 23:33:09
+ * @Last Modified time: 2022-10-11 23:49:49
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -19,6 +19,7 @@
               @click="dialogVisible = true"
               ><i class="el-icon-upload2">发布闲置</i></el-button
             >
+            <!-- 上传闲置对话框 -->
             <el-dialog
               title="上传闲置"
               :visible.sync="dialogVisible"
@@ -127,7 +128,7 @@
         </div>
       </div>
     </el-main>
-
+    <!-- 最新上架 -->
     <div class="list">
       <div class="wrapper">
         <ul>
@@ -183,6 +184,9 @@ export default {
   comments: {},
   data() {
     return {
+      //用户id
+      id: '',
+      shoppingCartNumber: '',
       data: [],
       productPictures: [],
       uploadData: {
@@ -208,12 +212,15 @@ export default {
   },
   created() {
     this.getList()
+    this.getUserId()
+    this.getShoppingCart()
   },
   methods: {
     setSize: function () {
       // 通过浏览器宽度(图片宽度)计算高度
       this.bannerHeight = 390 / 1920 * this.screenWidth;
     },
+    //获得最新上架商品
     getList() {
       this.$api.getList().then((res) => {
 
@@ -222,16 +229,16 @@ export default {
         }
       })
     },
+    //获得商品分类三级菜单
     getCategory() {
       this.$api.getCategory().then((res => {
         this.data = res.data || []
         console.log(this.uploadData)
       }))
     },
+    //发布闲置
     addFrom() {
-      let userInfo = localStorage.getItem('userInfo')
-      userInfo = JSON.parse(userInfo)
-      this.uploadData.productUserId = userInfo.id
+      this.uploadData.productUserId = this.id
       this.uploadData.productPicture = this.productPictures[0]
       this.$api.addFrom(this.uploadData).then((res => {
 
@@ -266,7 +273,21 @@ export default {
         this.$message.error('上传头像图片大小不能超过 10MB!');
       }
       return isLt2M;
-    }
+    },
+    
+    getUserId(){
+      let userInfo = localStorage.getItem('userInfo')
+      userInfo = JSON.parse(userInfo)
+      this.id = userInfo.id
+    },
+    getShoppingCart(){
+    
+      this.$api.getShoppingCart(this.id).then((res=>{
+        this.shoppingCartNumber=res.data
+        
+      }))
+      this.$emit('cartNumber', this.shoppingCartNumber);
+  },
 
   },
   mounted() {

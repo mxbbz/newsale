@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-30 23:09:25 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-10 23:33:15
+ * @Last Modified time: 2022-10-11 00:19:32
  */
 
 <template>
@@ -131,6 +131,7 @@ export default {
     goBack() {
       this.$router.push('/')
     },
+    //保存用户信息
     async submitForm() {
       let res = await this.$api.saveUserInfo(this.info)
       if (String(res.code) === '1') {
@@ -139,11 +140,13 @@ export default {
         this.$message.error(res.msg)
       }
     },
+    //切换账号
     switchAccounts() {
       localStorage.setItem("userInfo", "");
       this.$router.push({ path: "/login" })
       location.reload()
     },
+    //退出账号
     signOut() {
       localStorage.setItem("userInfo", "");
       this.$router.push({ path: "/" })
@@ -165,6 +168,7 @@ export default {
       }
       return isJPG && isLt2M;
     },
+    //根据id获得用户信息
     getUserInfo(id) {
       this.$api.getUserInfo(id).then((res => {
         if (String(res.code) === '1') {

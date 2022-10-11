@@ -2,7 +2,8 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-07 23:55:09
+ * @Last Modified time: 2022-10-11 00:17:50
+ * 商品信息页
  */
 
 <template>
@@ -86,7 +87,7 @@
 import confirmOrder from './confirmOrder.vue'
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {confirmOrder},
+  components: { confirmOrder },
   data() {
     //这里存放数据
     return {
@@ -104,27 +105,28 @@ export default {
     goBack() {
       this.$router.push('/')
     },
+    // 获得商品信息
     getDetails(id) {
       this.$api.getDetails(id).then((res => {
         this.productDetails = res.data
-
-
         let userId = this.productDetails.productUserId
-
         this.getUserInfo(userId)
       }))
     },
+    //获得轮播图
     getPicture(id) {
       this.$api.getPicture(id).then((res => {
         this.productPicture = res.data
 
       }))
     },
+    //获得用户信息
     getUserInfo(userId) {
       this.$api.getUserInfo(userId).then((res => {
         this.userInfo = res.data
       }))
     },
+    //添加购物车
     addShoppingCart() {
       let userInfo = localStorage.getItem('userInfo')
       userInfo = JSON.parse(userInfo)
@@ -139,8 +141,8 @@ export default {
         }
       }))
     },
-    toConfirmOrder(){
-      this.$router.push({ name:"confirmOrder",params:{productDetails:this.productDetails}})
+    toConfirmOrder() {
+      this.$router.push({ name: "confirmOrder", params: { productDetails: this.productDetails } })
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -166,7 +168,6 @@ export default {
 <style  scoped>
 .background {
   height: 600px;
-
 }
 .block {
   float: left;
@@ -175,7 +176,7 @@ export default {
 }
 .details {
   margin: 70px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   margin-top: 120px;
 }
 .details p {
@@ -191,7 +192,7 @@ export default {
   float: right;
   width: 150px;
   height: 300px;
-  background-color: #FFF;
+  background-color: #fff;
   margin-top: 70px;
 }
 </style>

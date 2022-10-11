@@ -1,4 +1,11 @@
-<!--  -->
+/*
+ * @Author: mxbbz 
+ * @Date: 2022-10-11 00:18:07 
+ * @Last Modified by: mxbbz
+ * @Last Modified time: 2022-10-11 00:18:27
+ * 登录页
+ */
+
 <template>
 <div class='login'>
   <div class="loginmenu">
@@ -89,6 +96,7 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
+  //登录
   async submitForm() {
       let res = await this.$api.loginApi({ name: this.loginForm.name,password: this.loginForm.password })
       if (String(res.code) === '1') {

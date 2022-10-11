@@ -53,9 +53,10 @@
               </el-col>
             </el-row>
           </div>
+          <home @answerValFun="cartNumber" />
           <div class="shopcar">
             <div class="wrappe">
-              <el-badge :value="12" class="item">
+              <el-badge :value="this.shoppingCartNumber"  class="item">
                 <el-button size="small" icon="el-icon-shopping-cart-full"
                   >购物车</el-button
                 >
@@ -83,32 +84,41 @@
 </template>
 
 <script>
-
+import home from './views/home.vue'
 export default {
   name: 'App',
+  comments: {home},
   data() {
     return {
+      id: '',
       userName: '',
       loginStaus: false,
-      activeName: 'second'
+    shoppingCartNumber: '',
     }
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
-    }
+    },
+    cartNumber(data){
+      alert(data)
+      this.shoppingCartNumber=data
+      }
+
   },
+
+
   created() {
-    
+      // 获得用户id
       let userName = localStorage.getItem('userInfo')
       userName=JSON.parse(userName)
       if(userName) {
         this.loginStaus=true
-				//userName.username==user.username  对应登录界面设置的key里面的value对应的数组值
 				this.user = userName.name
-			}
-    
+        this.id=userName.id
+			}  
   }
+
 }
 </script>
 
@@ -124,7 +134,10 @@ export default {
   border: 0;
   list-style: none;
 }
-
+a{
+  text-decoration: none;
+  color: #000;
+	}
 
 /* 顶端css */
 .topbar {

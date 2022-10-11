@@ -1,3 +1,11 @@
+/*
+ * @Author: mxbbz 
+ * @Date: 2022-10-11 00:18:35 
+ * @Last Modified by:   mxbbz 
+ * @Last Modified time: 2022-10-11 00:18:35 
+ * 购物车(待完成)
+ */
+
 <template>
 <div class='c'>
   <div class="image">

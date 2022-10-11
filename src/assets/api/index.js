@@ -30,20 +30,20 @@ const api = {
   },
   getAddress(id) {
     return request({
-      url: `api/user/getAddressBook/${id}`,
+      url: `api/addressBook/getAddressBook/${id}`,
       method: 'get',
     })
   },
   deleteAddress(data) {
     return request({
-      url: 'api/user/deleteAddress',
+      url: 'api/addressBook/deleteAddress',
       method: 'put',
       data
     })
   },
   saveAddress(id) {
     return request({
-      url: 'api/user/saveAddress',
+      url: 'api/addressBook/saveAddress',
       method: 'post',
       data
     })
@@ -74,7 +74,7 @@ const api = {
   },
   addShoppingCart(data) {
     return request({
-      url: 'api/product/addShoppingCart',
+      url: 'api/shoppingCart/addShoppingCart',
       method: 'post',
       data
     })
@@ -106,6 +106,12 @@ const api = {
       data: data
     })
   },
+  getShoppingCart(id) {
+    return request({
+      url: `api/shoppingCart/getShoppingCartNumber/${id}`,
+      method: 'get',
+    })
+  }
 
 
 }
