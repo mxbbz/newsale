@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app">
+    
     <!--顶部导航栏-->
     <div class="topbar">
       <div class="wrapper">
@@ -53,10 +54,9 @@
               </el-col>
             </el-row>
           </div>
-          <home @answerValFun="cartNumber" />
           <div class="shopcar">
             <div class="wrappe">
-              <el-badge :value="this.shoppingCartNumber"  class="item">
+              <el-badge :value="shoppingCartCount"  class="item">
                 <el-button size="small" icon="el-icon-shopping-cart-full"
                   >购物车</el-button
                 >
@@ -84,31 +84,33 @@
 </template>
 
 <script>
-import home from './views/home.vue'
+
 export default {
   name: 'App',
-  comments: {home},
+  components: { },
   data() {
     return {
       id: '',
       userName: '',
       loginStaus: false,
-    shoppingCartNumber: '',
+      shoppingCartCount: '',
     }
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    cartNumber(data){
-      alert(data)
-      this.shoppingCartNumber=data
-      }
-
+  },
+  watch:{
+    //监听购物车数量
+    '$store.state.shoppingCartCount'(){
+      this.shoppingCartCount=this.$store.state.shoppingCartCount
+    }
   },
 
 
   created() {
+    
       // 获得用户id
       let userName = localStorage.getItem('userInfo')
       userName=JSON.parse(userName)

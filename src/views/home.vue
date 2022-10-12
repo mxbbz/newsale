@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-11 23:49:49
+ * @Last Modified time: 2022-10-12 23:28:40
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -186,7 +186,6 @@ export default {
     return {
       //用户id
       id: '',
-      shoppingCartNumber: '',
       data: [],
       productPictures: [],
       uploadData: {
@@ -281,12 +280,10 @@ export default {
       this.id = userInfo.id
     },
     getShoppingCart(){
-    
+      //设置购物车数量
       this.$api.getShoppingCart(this.id).then((res=>{
-        this.shoppingCartNumber=res.data
-        
+        this.$store.commit('setShoppingCartCount',res.data)
       }))
-      this.$emit('cartNumber', this.shoppingCartNumber);
   },
 
   },
@@ -299,6 +296,7 @@ export default {
       this.screenWidth = window.innerWidth;
       this.setSize();
     }
+    
   },
 
 }
