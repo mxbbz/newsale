@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-11 00:17:50
+ * @Last Modified time: 2022-10-12 23:31:04
  * 商品信息页
  */
 
@@ -136,6 +136,7 @@ export default {
       this.$api.addShoppingCart({ userId: userId, productId: productId }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("添加成功")
+          this.$store.commit('setShoppingCartCount',this.$store.state.shoppingCartCount+1)
         } else {
           this.$message.error(res.msg)
         }
