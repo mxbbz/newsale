@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-12 23:28:40
+ * @Last Modified time: 2022-10-13 11:30:49
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -134,7 +134,7 @@
         <ul>
           <li>
             <el-image
-              style="width: 234px; height: 280px"
+              style="width: 234px; height: 250px"
               :src="latestimges"
             ></el-image>
           </li>
@@ -145,7 +145,7 @@
                 query: { productId: item.productId },
               }"
             >
-              <div class="img"><img :src="item.productPicture" alt /></div>
+              <div class="img"><img style="width: 170px; height: 160px" :src="item.productPicture" alt /></div>
 
               <h2>
                 <el-tag
@@ -187,25 +187,28 @@ export default {
       //用户id
       id: '',
       data: [],
+      //上传图片数据
       productPictures: [],
-      uploadData: {
-      },
+      //发布闲置数据
+      uploadData: {},
       listTree: {
         label: 'name',
         children: 'children',
         value: 'id',
       },
+      //分类三级菜单
       category: [],
+      //发布闲置
       dialogVisible: false,
-      latestimges: require('../assets/imges/new.jpg'),
-      latestMerchandise: [],
+      //轮播图
       imagebox: [
         { id: 0, idView: require('../assets/imges/banner.jpg') },
         { id: 1, idView: require('../assets/imges/banner2.jpg') },
         { id: 2, idView: require('../assets/imges/banner3.jpg') },
       ],
-      // 浏览器宽度
-      screenWidth: 0,
+      //最新商家图品
+      latestimges: require('../assets/imges/new.jpg'),
+      // 最新上架商品数据
       recent: [],
     }
   },
@@ -215,10 +218,7 @@ export default {
     this.getShoppingCart()
   },
   methods: {
-    setSize: function () {
-      // 通过浏览器宽度(图片宽度)计算高度
-      this.bannerHeight = 390 / 1920 * this.screenWidth;
-    },
+
     //获得最新上架商品
     getList() {
       this.$api.getList().then((res) => {
@@ -259,7 +259,7 @@ export default {
     },
     //文件上传成功
     handleAvatarSuccess(res, file) {
-      this.$message.success("图片修改成功！")
+      this.$message.success("图片上传成功")
       // this.uploadData.productPicture = URL.createObjectURL(file.raw);
       this.productPictures.push(res.data)
       console.log(this.productPictures)
@@ -286,18 +286,7 @@ export default {
       }))
   },
 
-  },
-  mounted() {
-    // 首次加载时,需要调用一次
-    this.screenWidth = window.innerWidth;
-    this.setSize();
-    // 窗口大小发生改变时,调用一次
-    window.onresize = () => {
-      this.screenWidth = window.innerWidth;
-      this.setSize();
-    }
-    
-  },
+  }
 
 }
 </script>
@@ -368,7 +357,7 @@ a {
 .list ul li {
   float: left;
   width: 234px;
-  height: 280px;
+  height: 250px;
   padding: 10px 0;
   margin: 20px 0 0px 12px;
   background-color: white;

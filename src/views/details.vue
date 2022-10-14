@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-12 23:31:04
+ * @Last Modified time: 2022-10-13 11:31:30
  * 商品信息页
  */
 
@@ -22,7 +22,7 @@
               v-for="item in productPicture"
               :key="item.blockId"
             >
-              <el-image :src="item.blockUrl"></el-image>
+              <el-image style="width: auto; height: 500px" :src="item.blockUrl"></el-image>
             </el-carousel-item>
           </el-carousel>
         </div>

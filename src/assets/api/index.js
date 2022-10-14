@@ -81,14 +81,14 @@ const api = {
   },
   addOrder(data) {
     return request({
-      url: 'api/product/addOrder',
+      url: 'api/orders/addOrder',
       method: 'post',
       data
     })
   },
   getCategory() {
     return request({
-      url: 'api/product/list/tree',
+      url: 'api/category/listTree',
       method: 'get',
     })
   },
@@ -111,8 +111,13 @@ const api = {
       url: `api/shoppingCart/getShoppingCartNumber/${id}`,
       method: 'get',
     })
-  }
-
+  },
+  getOrdersList(id) {
+    return request({
+      url: `api/orders/getOrdersList/${id}`,
+      method: 'get',
+    })
+  },
 
 }
 export default api;

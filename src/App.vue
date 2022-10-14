@@ -12,7 +12,7 @@
             <router-link to="/login">请登录..</router-link>
           </li>
           <li>
-            <router-link to="/home/users">我的订单</router-link>
+            <router-link to="/orders">我的订单</router-link>
           </li>
           <li>
             <router-link to="/home/users">我的收藏</router-link>

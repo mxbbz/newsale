@@ -5,6 +5,7 @@ import Login from '../views/login'
 import UserInfo from '../views/userInfo'
 import Details from '../views/details'
 import ConfirmOrder from "../views/confirmOrder"
+import Orders from '../views/orders'
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +34,11 @@ export default new Router({
       path: '/confirmOrder',
       name: 'confirmOrder',
       component: ConfirmOrder
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: Orders
     },
   ]
 })

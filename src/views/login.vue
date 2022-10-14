@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-11 00:18:07 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-11 00:18:27
+ * @Last Modified time: 2022-10-13 15:48:40
  * 登录页
  */
 
@@ -98,15 +98,18 @@ watch: {},
 methods: {
   //登录
   async submitForm() {
-      let res = await this.$api.loginApi({ name: this.loginForm.name,password: this.loginForm.password })
-      if (String(res.code) === '1') {
+      await this.$api.loginApi({ name: this.loginForm.name,password: this.loginForm.password }).then((res=>{
+        if (String(res.code) === '1') {
         localStorage.setItem('userInfo', JSON.stringify(res.map.user))
+        this.$store.commit('setUserId',JSON.stringify(res.map.user.id))
         this.$router.push(AppVue)
         location.reload() 
       } else {
         this.$message.error(res.msg)
         this.loading = false
       }
+      }))
+      
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
