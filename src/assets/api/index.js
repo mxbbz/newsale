@@ -106,7 +106,7 @@ const api = {
       data: data
     })
   },
-  getShoppingCart(id) {
+  getShoppingCartNumber(id) {
     return request({
       url: `api/shoppingCart/getShoppingCartNumber/${id}`,
       method: 'get',
@@ -123,7 +123,12 @@ const api = {
       url: `api/orders/delete/${id}`,
       method: 'delete',
     })
-  }
-
+  },
+  getShoppingCart(id) {
+    return request({
+      url: `api/shoppingCart/getShoppingCart/${id}`,
+      method: 'get',
+    })
+  },
 }
 export default api;

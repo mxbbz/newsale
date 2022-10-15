@@ -1,8 +1,8 @@
 /*
  * @Author: mxbbz 
  * @Date: 2022-10-11 00:18:35 
- * @Last Modified by:   mxbbz 
- * @Last Modified time: 2022-10-11 00:18:35 
+ * @Last Modified by: mxbbz
+ * @Last Modified time: 2022-10-16 00:31:18
  * 购物车(待完成)
  */
 
@@ -13,8 +13,8 @@
     </div>
   <div class="wrapper">
     
-    <div class="orderList">
-  <el-table
+    <div class="shoppingCart">
+      <el-table
     ref="multipleTable"
     :data="tableData"
     tooltip-effect="dark"
@@ -25,20 +25,24 @@
       width="55">
     </el-table-column>
     <el-table-column
-      label="日期"
+      label=""
       width="120">
-      <template slot-scope="scope">{{ scope.row.date }}</template>
+      <template slot-scope="scope"><img :src="scope.row.productPicture" style="height: 100px; width: 100px; "/></template>
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="姓名"
+      prop="productName"
+      label="商品名"
       width="120">
     </el-table-column>
     <el-table-column
-      prop="address"
-      label="地址"
+      label="价格"
       show-overflow-tooltip>
+      <template slot-scope="scope">
+        <span class="del">{{scope.row.productPrice}}</span>   {{scope.row.productSellingPrice}}
+      </template>
     </el-table-column>
+
+
   </el-table>
 
     </div>
@@ -56,7 +60,8 @@ components: {},
 data() {
 //这里存放数据
 return {
-  productDetails: "",
+  userId: 0,
+  tableData: [],
 };
 },
 //监听属性 类似于data概念
@@ -65,11 +70,16 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
-
+  getShoppingCart(){
+      this.$api.getShoppingCart(this.userId).then((res=>{
+        this.tableData=res.data
+      }))
+  }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-  this.productDetails=this.$route.params.productDetails
+    this.userId=this.$store.state.userId
+    this.getShoppingCart()
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
@@ -94,5 +104,10 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 .orderList{
   height: 300px;
   background-color: antiquewhite;
+}
+.del {
+  margin-left: 0.5em;
+  color: #b0b0b0;
+  text-decoration: line-through;
 }
 </style>

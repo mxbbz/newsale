@@ -117,6 +117,7 @@ export default {
       // 获得用户id
       let userName = localStorage.getItem('userInfo')
       userName=JSON.parse(userName)
+      this.$store.commit('setUserId',userName.id)
       if(userName) {
         this.loginStaus=true
 				this.user = userName.name
