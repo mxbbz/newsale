@@ -2,102 +2,125 @@
  * @Author: https://blog.csdn.net/Passerby_K/article/details/110930324
  * @Date: 2022-10-14 22:40:19 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-14 23:51:03
+ * @Last Modified time: 2022-10-15 18:01:32
  * 
  */
 
 <template>
-<div class='orders'>
-  <div>&nbsp;</div>
+  <div class="orders">
+    <div>&nbsp;</div>
     <el-divider />
     <div class="wrapper">
-        <div class="background">
+      <div class="background">
+        <div class="ordersList">
+          <el-table :data="orders" stripe row-key="id">
+            <el-table-column type="selection" width="55"> </el-table-column>
+            <el-table-column label="商品信息" width="250" class="box">
+              <template slot-scope="scope">
+                <div class="mesSty">
+                  <img
+                    class="imgSty"
+                    :src="scope.row.productPicture"
+                    alt=""
+                    style="height: 100px; width: 100px; margin-top: 10px"
+                  />
+                  <div class="mesFont">
+                    <p class="pb_sty">
+                      <span>{{ scope.row.productName }}</span>
+                    </p>
+                  </div>
+                </div>
+                <!-- 提示 -->
+                <div class="item">
+                  <span style="margin-left: 1%"
+                    >订单编号:{{ scope.row.id }}</span
+                  >
+                  <span class="hint_pr"
+                    >商家:{{ scope.row.userName
+                    }}<el-button type="text" class="el-icon-phone-outline"
+                      >联系我</el-button
+                    ></span
+                  >
+                  <span class="hint_pr"
+                    >下单时间:{{ scope.row.createTime }}</span
+                  >
+                  <span
+                    class="hint_pr"
+                    style="color: #99cc66"
+                    v-if="scope.row.status == 0"
+                    >正常</span
+                  >
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="amount"
+              align="right"
+              min-width="100"
+              label="价格"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="province"
+              min-width="140"
+              align="center"
+              label="收货地址"
+            >
+            </el-table-column>
 
-          
-          <div class="ordersList">
+            <el-table-column
+              prop="consignee"
+              min-width="140"
+              align="center"
+              label="收货人"
+            >
+            </el-table-column>
 
-            <el-table :data="orders"
-            stripe
-            row-key="id">
-    <el-table-column type="selection"
-                     width="55">
-    </el-table-column>
-    <el-table-column label="商品信息"
-                     width="250"
-                     class="box">
-      <template slot-scope="scope">
-        <div class="mesSty">
-          <img class="imgSty"
-               :src="scope.row.productPicture"
-               alt="" style="height:100px;width: 100px;margin-top: 10px;">
-          <div class="mesFont">
-            <p class="pb_sty"><span>{{scope.row.productName}}</span></p>
-          </div>
+            <el-table-column
+              prop="phone"
+              min-width="140"
+              align="center"
+              label="手机号"
+            >
+            </el-table-column>
+
+            <el-table-column
+              prop="address"
+              min-width="140"
+              align="center"
+              label="订单状态"
+            >
+            </el-table-column>
+
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" class="el-icon-more-outline"
+                  >订单详情</el-button
+                >
+                <el-popconfirm
+                  title="确定删除吗？"
+                  @confirm="deleteOrders(scope.row.id)"
+                >
+                  <el-button
+                    slot="reference"
+                    type="text"
+                    size="small"
+                    class="el-icon-delete"
+                    >删除</el-button
+                  >
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <!-- 提示 -->
-        <div class="item">
-          <span style="margin-left:1%">订单编号:{{scope.row.id}}</span>
-          <span class="hint_pr">商家:{{scope.row.userName}}<el-button type="text" class="el-icon-phone-outline
-">联系我</el-button></span>
-          <span class="hint_pr">下单时间:{{scope.row.createTime}}</span>
-          <span class="hint_pr" style="color:#99CC66" v-if="scope.row.status==0">正常</span>
-          
-
-  
-
-        </div>
-      </template>
-    </el-table-column>
-    <el-table-column prop="amount"
-                     align="right"
-                     min-width="100"
-                     label="价格">
-    </el-table-column>
-    <el-table-column prop="province"
-                     min-width="140"
-                     align="center"
-                     label="收货地址">
-    </el-table-column>
-
-    <el-table-column prop="consignee"
-                     min-width="140"
-                     align="center"
-                     label="收货人">
-    </el-table-column>
-
-    <el-table-column prop="phone"
-                     min-width="140"
-                     align="center"
-                     label="手机号">
-    </el-table-column>
-
-    <el-table-column prop="address"
-                     min-width="140"
-                     align="center"
-                     label="订单状态">
-    </el-table-column>
-
-
-
-
-    <el-table-column fixed="right"
-                     label="操作"
-                     align="center"
-                     width="100">
-      <template slot-scope="">
-        <el-button type="text"
-                   size="small" class="el-icon-more-outline">订单详情</el-button>
-                   <el-button type="text"
-                   size="small" class="el-icon-delete">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-
-
-          </div>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -105,63 +128,72 @@
 //例如：import 《组件名称》 from '《组件路径》';
 
 export default {
-//import引入的组件需要注入到对象中才能使用
-components: {},
-data() {
-//这里存放数据
-return {
-  orders:[],
-  popSty: false,
-  textarea: '',
-};
-},
-//监听属性 类似于data概念
-computed: {},
-//监控data中的数据变化
-watch: {
-},
-//方法集合
-methods: {
-  getOrdersList(){
-    let userInfo = localStorage.getItem('userInfo')
+  //import引入的组件需要注入到对象中才能使用
+  components: {},
+  data() {
+    //这里存放数据
+    return {
+      orders: [],
+      popSty: false,
+      textarea: '',
+    };
+  },
+  //监听属性 类似于data概念
+  computed: {},
+  //监控data中的数据变化
+  watch: {
+  },
+  //方法集合
+  methods: {
+    //订单列
+    getOrdersList() {
+      let userInfo = localStorage.getItem('userInfo')
       userInfo = JSON.parse(userInfo)
       let id = userInfo.id
 
-    this.$api.getOrdersList(id).then((res=>{
-      this.orders=res.data || []
-    }))
+      this.$api.getOrdersList(id).then((res => {
+        this.orders = res.data || []
+        this.counts = res.data.total
+      }))
+    },
+    //逻辑删除订单
+    deleteOrders(id) {
+      alert(id)
+      this.$api.deleteOrders(id).then((res => {
+        this.getOrdersList()
+        this.$message.success(res.data)
+      }))
+    }
+
+
+
   },
+  //生命周期 - 创建完成（可以访问当前this实例）
+  created() {
+    this.getOrdersList()
 
 
-},
-//生命周期 - 创建完成（可以访问当前this实例）
-created() {
-  this.getOrdersList()
+  },
+  //生命周期 - 挂载完成（可以访问DOM元素）
+  mounted() {
 
- 
-},
-//生命周期 - 挂载完成（可以访问DOM元素）
-mounted() {
-
-},
-beforeCreate() {}, //生命周期 - 创建之前
-beforeMount() {}, //生命周期 - 挂载之前
-beforeUpdate() {}, //生命周期 - 更新之前
-updated() {}, //生命周期 - 更新之后
-beforeDestroy() {}, //生命周期 - 销毁之前
-destroyed() {}, //生命周期 - 销毁完成
-activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+  },
+  beforeCreate() { }, //生命周期 - 创建之前
+  beforeMount() { }, //生命周期 - 挂载之前
+  beforeUpdate() { }, //生命周期 - 更新之前
+  updated() { }, //生命周期 - 更新之后
+  beforeDestroy() { }, //生命周期 - 销毁之前
+  destroyed() { }, //生命周期 - 销毁完成
+  activated() { }, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
 <style scoped>
-.orders{
+.orders {
   margin: 70px;
   margin-top: 120px;
 }
-.background {
-  height: 600px;
-}
-.head{
+
+.head {
   height: 5px;
 }
 
@@ -183,9 +215,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
   top: 0;
   left: -55px;
   z-index: 1;
-  
 }
-
 
 .hint_pr {
   padding-left: 20vh;
@@ -224,5 +254,4 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
   float: right;
   cursor: pointer;
 }
-
 </style>

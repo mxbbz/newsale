@@ -118,6 +118,12 @@ const api = {
       method: 'get',
     })
   },
+  deleteOrders(id) {
+    return request({
+      url: `api/orders/delete/${id}`,
+      method: 'delete',
+    })
+  }
 
 }
 export default api;

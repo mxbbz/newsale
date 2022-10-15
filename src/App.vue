@@ -57,7 +57,7 @@
           <div class="shopcar">
             <div class="wrappe">
               <el-badge :value="shoppingCartCount"  class="item">
-                <el-button size="small" icon="el-icon-shopping-cart-full"
+                <el-button size="small" icon="el-icon-shopping-cart-full" @click="tpShoppingCart"
                   >购物车</el-button
                 >
               </el-badge>
@@ -100,6 +100,9 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    tpShoppingCart(){
+      this.$router.push({ path: "/shoppingCart" })
+    }
   },
   watch:{
     //监听购物车数量

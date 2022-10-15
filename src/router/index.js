@@ -6,6 +6,7 @@ import UserInfo from '../views/userInfo'
 import Details from '../views/details'
 import ConfirmOrder from "../views/confirmOrder"
 import Orders from '../views/orders'
+import ShoppingCart from '../views/shoppingCart'
 Vue.use(Router)
 
 export default new Router({
@@ -40,5 +41,10 @@ export default new Router({
       name: 'orders',
       component: Orders
     },
+    {
+      path: '/shoppingCart',
+      name: 'shoppingCart',
+      component: ShoppingCart
+    }
   ]
 })
