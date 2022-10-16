@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-11 00:14:20 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-11 00:16:13
+ * @Last Modified time: 2022-10-16 23:15:16
  * 确认订单页(购买)
  */
 
@@ -39,15 +39,16 @@
         </el-table>
       </div>
       <!-- 订单信息 -->
-      <div class="order">
-        <h2>确认订单</h2>
+      <h2>确认订单</h2>
+      <div class="order" v-for="item in this.productDetails" :key="item.id">
+        
         <el-image
           style="width: 100px; height: 100px"
-          :src="productDetails.productPicture"
+          :src="item.productPicture"
           :fit="fit"
         ></el-image>
-        {{ productDetails.productName }}
-        {{ productDetails.productSellingPrice }}
+        {{ item.productName }}
+        {{ item.productSellingPrice }}
       </div>
       <div class="addressInfo">
         配送地址:{{ currentRow.province }}{{ currentRow.detail }}
@@ -120,7 +121,7 @@ export default {
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.productDetails = this.$route.params.productDetails
+    this.productDetails.push(this.$route.params.productDetails)
     this.getAddr()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
@@ -139,11 +140,15 @@ export default {
 <style scoped>
 .confirmOrder {
   background-color: #f5f5f5;
-  height: 600px;
   margin-top: 120px;
 }
 .order {
   background-color: aliceblue;
+  margin-top: 30px;
+  
+}
+.order:nth-last-child(1){
+  height: 200px;
 }
 .orderInfo {
   border: 1cm #f5f5f5;
