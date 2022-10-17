@@ -135,6 +135,13 @@ const api = {
       url: `api/shoppingCart/deleteShoppingCartProduct/${id}`,
       method: 'delete',
     })
+  },
+  getProductList(data) {
+    return request({
+      url: `api/product/productList`,
+      method: 'post',
+      data
+    })
   }
 }
 export default api;

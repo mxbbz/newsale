@@ -121,7 +121,13 @@ export default {
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.productDetails.push(this.$route.params.productDetails)
+    //如果传来的商品大于一就直接渲染 单个数据则push进去
+    if(this.$route.params.productDetails.length>1){
+      this.productDetails=this.$route.params.productDetails
+    }else{
+      this.productDetails.push(this.$route.params.productDetails)
+    }
+    
     this.getAddr()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）

@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-15 23:12:28
+ * @Last Modified time: 2022-10-17 23:41:25
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -99,7 +99,9 @@
             </el-dialog>
           </div>
           <div class="categorymenu">
-            <el-link icon="el-icon-s-goods">全部商品</el-link>
+            
+            
+            <router-link :to="{name:'goods',query:{categoryId:0}}"><el-link icon="el-icon-s-goods" >全部商品</el-link></router-link>
             <br />
             <el-link icon="el-icon-camera-solid">数码产品</el-link>
             <br />
@@ -113,7 +115,7 @@
             <br />
             <el-link icon="el-icon-headset">耳机</el-link>
             <br />
-            <el-link icon="el-icon-mobile">手机</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:255}}"><el-link icon="el-icon-mobile" >手机</el-link></router-link>
             <br />
             <el-link icon="el-icon-bicycle">车类</el-link>
           </div>

@@ -2,8 +2,8 @@
  * @Author: mxbbz 
  * @Date: 2022-10-11 00:18:35 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-16 23:15:25
- * 购物车(待完成)
+ * @Last Modified time: 2022-10-17 20:57:17
+ * 
  */
 
 <template>
@@ -137,7 +137,7 @@ export default {
     },
     toConfirmOrder() {
       console.log(this.dataonLineListSelections)
-      this.$router.push({ name: "confirmOrder", params: {productDetails: JSON.parse(this.dataonLineListSelections)}   })
+      this.$router.push({ name: "confirmOrder", params: {productDetails: this.dataonLineListSelections}   })
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
