@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-09-27 21:04:44 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-17 23:41:25
+ * @Last Modified time: 2022-10-17 23:56:19
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -115,7 +115,7 @@
             <br />
             <el-link icon="el-icon-headset">耳机</el-link>
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:255}}"><el-link icon="el-icon-mobile" >手机</el-link></router-link>
+            <router-link :to="{name:'goods',query:{categoryId:225}}"><el-link icon="el-icon-mobile" >手机</el-link></router-link>
             <br />
             <el-link icon="el-icon-bicycle">车类</el-link>
           </div>

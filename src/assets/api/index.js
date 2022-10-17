@@ -138,9 +138,8 @@ const api = {
   },
   getProductList(data) {
     return request({
-      url: `api/product/productList`,
+      url: `api/product/productList?categoryId=${data}`,
       method: 'post',
-      data
     })
   }
 }
