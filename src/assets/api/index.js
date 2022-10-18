@@ -139,7 +139,13 @@ const api = {
   getProductList(data) {
     return request({
       url: `api/product/productList?categoryId=${data}`,
-      method: 'post',
+      method: 'get',
+    })
+  },
+  seracchProductList(data) {
+    return request({
+      url: `api/product/serachProductList?serach=${data}`,
+      method: 'get',
     })
   }
 }

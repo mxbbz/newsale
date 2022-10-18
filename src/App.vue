@@ -94,6 +94,8 @@ export default {
       userName: '',
       loginStaus: false,
       shoppingCartCount: '',
+      state1: '',
+        restaurants: [],
     }
   },
   methods: {
@@ -102,7 +104,26 @@ export default {
     },
     tpShoppingCart(){
       this.$router.push({ path: "/shoppingCart" })
+    },
+    searchClick(){
+      this.$router.push({ name: "goods",query:{serach:this.state1}})
+    },
+    querySearch(queryString, cb) {
+      cb(this.restaurants)
+    },
+    loadAll(){
+    return [
+          { "value": "三全鲜食（北新泾店）" },
+          { "value": "Hot honey 首尔炸鸡（仙霞路）"},
+          { "value": "新旺角茶餐厅"},
+          { "value": "泷千家(天山西路店)"},
+          { "value": "胖仙女纸杯蛋糕（上海凌空店）"},
+          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
+          { "value": "豪大大香鸡排超级奶爸"},
+          { "value": "茶芝兰（奶茶，手抓饼）"}
+        ]
     }
+    
   },
   watch:{
     //监听购物车数量
@@ -113,7 +134,7 @@ export default {
 
 
   created() {
-    
+      this.state1=""
       // 获得用户id
       let userName = localStorage.getItem('userInfo')
       userName=JSON.parse(userName)
@@ -122,8 +143,11 @@ export default {
         this.loginStaus=true
 				this.user = userName.name
         this.id=userName.id
-			}  
-  }
+			}
+  },
+  mounted() {
+   this.restaurants=this.loadAll()
+  },
 
 }
 </script>

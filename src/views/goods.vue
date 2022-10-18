@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-17 17:23:01 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-17 23:57:43
+ * @Last Modified time: 2022-10-18 17:41:05
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -67,7 +67,6 @@ export default {
   data() {
     //这里存放数据
     return {
-      categoryId: 0,
       productList: [],
     };
   },
@@ -78,19 +77,37 @@ export default {
     "$route.query.categoryId": {
       immediate: true,
       handler() {
-        this.categoryId=this.$route.query.categoryId
-        this.getProductList();
+        if(this.$route.query.categoryId!=null){
+          this.getProductList(this.$route.query.categoryId);
+        }
+        
       },
     },
+    "$route.query.serach": {
+      immediate: true,
+      handler() {
+
+        if(this.$route.query.serach!=null){
+          this.seracchProductList(this.$route.query.serach);
+        }
+        
+      },
+    },
+
   },
   //方法集合
   methods: {
-    getProductList() {
-
-      this.$api.getProductList(this.categoryId).then((res) => {
+    getProductList(categoryId) {
+      this.$api.getProductList(categoryId).then((res) => {
         if (String(res.code) === '1') {
           this.productList=res.data || []
-
+        }
+      })
+    },
+    seracchProductList(serach){
+      this.$api.seracchProductList(serach).then((res) => {
+        if (String(res.code) === '1') {
+          this.productList=res.data || []
         }
       })
     }
