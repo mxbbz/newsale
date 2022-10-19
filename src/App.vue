@@ -33,26 +33,37 @@
         <div class="wrapper">
           <div class="logoimg">
             <router-link to="/">
-              <img src="./assets/imges/logo.png" alt />
+              <img ref="logo" src="./assets/imges/logo.png" alt />
             </router-link>
           </div>
           <div class="search">
-            <el-row class="autocomplete">
-              <el-col :span="12">
-                <el-autocomplete
+
+                  <el-autocomplete
+                  ref="list"
                   class="inline-input"
                   v-model="state1"
                   :fetch-suggestions="querySearch"
+                  :clearable="true"
+                  :select-when-unmatched="true"
                   placeholder="请输入内容"
                   @select="handleSelect"
-                  ><el-button
-                    slot="append"
+                  :autofocus="true">
+
+                </el-autocomplete>
+
+                <el-button
+                type="primary"
+
                     icon="el-icon-search"
                     @click="searchClick"
-                  ></el-button
-                ></el-autocomplete>
-              </el-col>
-            </el-row>
+                    class="button"
+                  />
+
+
+              
+             
+
+           
           </div>
           <div class="shopcar">
             <div class="wrappe">
@@ -95,7 +106,9 @@ export default {
       loginStaus: false,
       shoppingCartCount: '',
       state1: '',
-        restaurants: [],
+      restaurants: [],
+      load: [],
+      
     }
   },
   methods: {
@@ -106,24 +119,26 @@ export default {
       this.$router.push({ path: "/shoppingCart" })
     },
     searchClick(){
+      
+
       this.$router.push({ name: "goods",query:{serach:this.state1}})
+      var str="{\"value\":\""+this.state1+"\"}";
+      var c = JSON.parse(str);
+      
+      this.load.push(c)
+
+      
+    
+    },
+    handleSelect(){
+      this.$router.push({ name: "goods",query:{serach:this.state1}})
+      
     },
     querySearch(queryString, cb) {
-      cb(this.restaurants)
+      cb(this.restaurants);
     },
-    loadAll(){
-    return [
-          { "value": "三全鲜食（北新泾店）" },
-          { "value": "Hot honey 首尔炸鸡（仙霞路）"},
-          { "value": "新旺角茶餐厅"},
-          { "value": "泷千家(天山西路店)"},
-          { "value": "胖仙女纸杯蛋糕（上海凌空店）"},
-          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-          { "value": "豪大大香鸡排超级奶爸"},
-          { "value": "茶芝兰（奶茶，手抓饼）"}
-        ]
-    }
-    
+
+
   },
   watch:{
     //监听购物车数量
@@ -146,7 +161,7 @@ export default {
 			}
   },
   mounted() {
-   this.restaurants=this.loadAll()
+   this.restaurants=this.load
   },
 
 }
@@ -208,6 +223,7 @@ a{
   height: 100px;
   margin-left: 360px;
 }
+
 .inline-input {
   width: 550px;
 }
