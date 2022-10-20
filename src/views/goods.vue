@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-17 17:23:01 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-20 23:57:35
+ * @Last Modified time: 2022-10-21 00:18:33
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -58,8 +58,7 @@
         </ul>
        
       </div>
-    </div>
-    <el-pagination
+      <el-pagination
         class="pageList"
         :page-size="pageSize"
         layout="prev, pager, next"
@@ -67,10 +66,13 @@
         :current-page.sync="page"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-
+        background
       ></el-pagination>
+    </div>
+    
 
   </div>
+  
 </template>
 
 <script>
@@ -103,13 +105,12 @@ export default {
     "$route.query.serach": {
       immediate: true,
       handler() {
-
         if(this.$route.query.serach!=null){
           this.seracchProductList(this.$route.query.serach);
         }
-        
       },
     },
+
 
   },
   //方法集合
@@ -132,19 +133,35 @@ export default {
       })
     },
     seracchProductList(serach){
-      this.$api.seracchProductList(this.page,this.pageSize,serach).then((res) => {
+
+      const data = {
+              page: this.page,
+              pageSize: this.pageSize,
+              serach: serach
+            }
+      this.$api.seracchProductList(data).then((res) => {
         if (String(res.code) === '1') {
-          this.productList=res.data || []
+          this.productList=res.data.records || []
         }
       })
     },
     handleSizeChange (val) {
             this.pageSize = val
-            this.getProductList()
+            if(this.$route.query.serach!=null){
+          this.seracchProductList(this.$route.query.serach);
+        }
+        if(this.$route.query.categoryId!=null){
+          this.getProductList(this.$route.query.categoryId);
+        }
           },
           handleCurrentChange (val) {
             this.page = val
-            this.getProductList()
+            if(this.$route.query.serach!=null){
+          this.seracchProductList(this.$route.query.serach);
+        }
+        if(this.$route.query.categoryId!=null){
+          this.getProductList(this.$route.query.categoryId);
+        }
           }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -227,5 +244,8 @@ a {
   margin-left: 0.5em;
   color: #b0b0b0;
   text-decoration: line-through;
+}
+.pageList{
+  text-align: center;
 }
 </style>
