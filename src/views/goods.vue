@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-17 17:23:01 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-19 21:42:24
+ * @Last Modified time: 2022-10-20 23:57:35
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -51,10 +51,25 @@
                 >
               </p>
             </router-link>
+       
+
+
           </li>
         </ul>
+       
       </div>
     </div>
+    <el-pagination
+        class="pageList"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="1000"
+        :current-page.sync="page"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+
+      ></el-pagination>
+
   </div>
 </template>
 
@@ -67,7 +82,9 @@ export default {
   data() {
     //这里存放数据
     return {
-      productList: [],
+      productList: [null],
+      page: 1,
+      pageSize: 25,
     };
   },
   //监听属性 类似于data概念
@@ -98,23 +115,40 @@ export default {
   //方法集合
   methods: {
     getProductList(categoryId) {
-      this.$api.getProductList(categoryId).then((res) => {
+
+      const data = {
+              page: this.page,
+              pageSize: this.pageSize,
+              categoryId: categoryId
+            }
+
+          console.log(data)
+      this.$api.getProductList(data).then((res) => {
+        if (String(res.code) === '1') {
+          
+          this.productList=res.data.records || []
+          
+        }
+      })
+    },
+    seracchProductList(serach){
+      this.$api.seracchProductList(this.page,this.pageSize,serach).then((res) => {
         if (String(res.code) === '1') {
           this.productList=res.data || []
         }
       })
     },
-    seracchProductList(serach){
-      this.$api.seracchProductList(serach).then((res) => {
-        if (String(res.code) === '1') {
-          this.productList=res.data || []
-        }
-      })
-    }
+    handleSizeChange (val) {
+            this.pageSize = val
+            this.getProductList()
+          },
+          handleCurrentChange (val) {
+            this.page = val
+            this.getProductList()
+          }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    // this.getProductList()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

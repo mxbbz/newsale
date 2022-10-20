@@ -22,7 +22,7 @@
               v-for="item in productPicture"
               :key="item.blockId"
             >
-              <el-image style="width: auto; height: 500px" :src="item.blockUrl"></el-image>
+              <el-image style="width: auto; height: 430px" :src="item.blockUrl"></el-image>
             </el-carousel-item>
           </el-carousel>
         </div>

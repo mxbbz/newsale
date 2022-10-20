@@ -28,7 +28,7 @@
           ref="multipleTable"
           :data="tableData"
           tooltip-effect="dark"
-          style="width: 100%"
+          
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
@@ -54,7 +54,7 @@
           <el-table-column prop="productIntro" label="商品详情" width="250">
           </el-table-column>
 
-          <el-table-column label="商品类型" width="200">
+          <el-table-column label="商品类型" width="150">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.productBrandNew" type="success"
                 >#全新</el-tag
@@ -166,7 +166,6 @@ export default {
   margin-top: 100px;
 }
 .orderList {
-  height: 300px;
   background-color: antiquewhite;
 }
 .top {
@@ -178,6 +177,7 @@ export default {
   font-size: 25px;
   float: left;
   margin-top: 40px;
+
 }
 .top .money {
   font-size: 25px;
@@ -188,5 +188,7 @@ export default {
   float: right;
   margin-top: 40px;
   margin-left: 20px;
+
 }
+
 </style>

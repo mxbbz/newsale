@@ -103,21 +103,17 @@
             
             <router-link :to="{name:'goods',query:{categoryId:0}}"><el-link icon="el-icon-s-goods" >全部商品</el-link></router-link>
             <br />
-            <el-link icon="el-icon-camera-solid">数码产品</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:342}}"><el-link icon="el-icon-camera-solid">数码产品</el-link></router-link>
             <br />
-            <el-link icon="el-icon-basketball">体育用品</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:454}}"><el-link icon="el-icon-cpu">台式电脑</el-link></router-link>
             <br />
-            <el-link icon="el-icon-cpu">电子产品</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:449}}"><el-link icon="el-icon-s-platform">笔记本</el-link></router-link>
             <br />
-            <el-link icon="el-icon-collection">书籍古典</el-link>
-            <br />
-            <el-link icon="el-icon-table-lamp">装饰</el-link>
-            <br />
-            <el-link icon="el-icon-headset">耳机</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:378}}"><el-link icon="el-icon-headset">耳机</el-link></router-link>
             <br />
             <router-link :to="{name:'goods',query:{categoryId:225}}"><el-link icon="el-icon-mobile" >手机</el-link></router-link>
             <br />
-            <el-link icon="el-icon-bicycle">车类</el-link>
+            <router-link :to="{name:'goods',query:{categoryId:452}}"> <el-link icon="el-icon-edit-outline">平板</el-link></router-link>
           </div>
         </div>
         <!--动态图片轮播图 -->
@@ -136,7 +132,7 @@
         <ul>
           <li>
             <el-image
-              style="width: 234px; height: 250px"
+              style="width: 234px; height: 230px"
               :src="latestimges"
             ></el-image>
           </li>
@@ -147,7 +143,7 @@
                 query: { productId: item.productId },
               }"
             >
-              <div class="img"><img style="width: 170px; height: 160px" :src="item.productPicture" alt /></div>
+              <div class="img"><img style="width: 170px; height: 140px" :src="item.productPicture" alt /></div>
 
               <h2>
                 <el-tag
@@ -329,7 +325,7 @@ img {
   float: left;
   width: 235px;
   height: 400px;
-  background: #d3dce6 border-box;
+  background: #f4f4f4 border-box;
   border-radius: 5px;
 }
 .category h2 {
@@ -359,7 +355,7 @@ a {
 .list ul li {
   float: left;
   width: 234px;
-  height: 250px;
+  height: 230px;
   padding: 10px 0;
   margin: 20px 0 0px 12px;
   background-color: white;
