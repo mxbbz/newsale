@@ -8,6 +8,8 @@
 
 <template>
   <div id="home" class="home">
+      
+    
     <el-main>
       <div class="wrapper">
         <!-- 左侧分类菜单 -->
@@ -173,6 +175,7 @@
         </ul>
       </div>
     </div>
+ 
   </div>
 </template>
 <script>

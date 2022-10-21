@@ -1,5 +1,13 @@
 <template>
   <div id="app" class="app">
+    <div class="fixedBtn">
+      <!--消息-->
+      <div><el-button  icon="el-icon-chat-dot-square" style="color:#0066CC" circle></el-button></div>
+      <div> <el-button icon="el-icon-service" style="color:#0066CC" circle></el-button></div>
+      
+      
+      <div><el-button icon="el-icon-caret-top" style="color:#0066CC" circle @click="backTop"></el-button></div>
+    </div>
     
     <!--顶部导航栏-->
     <div class="topbar">
@@ -59,11 +67,6 @@
                     class="button"
                   />
 
-
-              
-             
-
-           
           </div>
           <div class="shopcar">
             <div class="wrappe">
@@ -85,13 +88,9 @@
           </div>
         </el-footer>
       </div>
-
   
 </div>
 
-
-  
-    
 </template>
 
 <script>
@@ -120,15 +119,12 @@ export default {
     },
     searchClick(){
       
-
       this.$router.push({ name: "goods",query:{serach:this.state1}})
       var str="{\"value\":\""+this.state1+"\"}";
       var c = JSON.parse(str);
       
       this.load.push(c)
 
-      
-    
     },
     handleSelect(){
       this.$router.push({ name: "goods",query:{serach:this.state1}})
@@ -137,7 +133,11 @@ export default {
     querySearch(queryString, cb) {
       cb(this.restaurants);
     },
+    backTop(){
+      window.scroll(0,0);
+    },
 
+   
 
   },
   watch:{
@@ -146,7 +146,6 @@ export default {
       this.shoppingCartCount=this.$store.state.shoppingCartCount
     }
   },
-
 
   created() {
       this.state1=""
@@ -223,7 +222,6 @@ a{
   height: 100px;
   margin-left: 360px;
 }
-
 .inline-input {
   width: 550px;
 }
@@ -235,9 +233,19 @@ a{
 }
 /* 尾页 */
 .footer{
-  
   height: 260px;
   background-color: #333;
+}
+.fixedBtn{
 
+  position: fixed;
+    right: 15px;
+    bottom: 82px;
+    width: 40px;
+    font-size: 30px;
+    z-index: 1040;
+}
+.fixedBtn i{
+  font-size: 20px;
 }
 </style>

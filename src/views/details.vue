@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-13 11:31:30
+ * @Last Modified time: 2022-10-21 00:30:43
  * 商品信息页
  */
 
@@ -28,15 +28,16 @@
         </div>
         <!-- 用户信息 -->
         <div class="user">
-          <el-col :span="12">
+
             <el-avatar
               shape="square"
               :src="userInfo.avatar"
               :size="50"
+              style="margin-top: 20px"
             ></el-avatar>
             <p>{{ userInfo.name }}</p>
             <el-button type="success">与我联系</el-button>
-          </el-col>
+            <el-button type="danger">举报</el-button>
         </div>
         <!-- 标题详情 -->
         <div class="details">
@@ -176,7 +177,7 @@ export default {
   margin: 70px;
 }
 .details {
-  margin: 70px;
+  
   background-color: #f5f5f5;
   margin-top: 120px;
 }
@@ -195,5 +196,7 @@ export default {
   height: 300px;
   background-color: #fff;
   margin-top: 70px;
+  text-align: center;
 }
+
 </style>
