@@ -8,8 +8,6 @@
 
 <template>
   <div id="home" class="home">
-      
-    
     <el-main>
       <div class="wrapper">
         <!-- 左侧分类菜单 -->
@@ -33,8 +31,9 @@
                 ref="form"
                 :model="uploadData"
                 label-width="80px"
+                :rules="rules"
               >
-                <el-form-item label="商品名">
+                <el-form-item label="商品名" prop="productName">
                   <el-input v-model="uploadData.productName"></el-input>
                 </el-form-item>
 
@@ -46,14 +45,15 @@
                     @visible-change="getCategory"
                   ></el-cascader>
                 </el-form-item>
-                <el-form-item label="商品标题">
+
+                <el-form-item label="商品标题" prop="productTitle">
                   <el-input v-model="uploadData.productTitle"></el-input>
                 </el-form-item>
-                <el-form-item label="商品原价">
+                <el-form-item label="商品原价" prop="productPrice">
                   <el-input v-model="uploadData.productPrice"></el-input>
                 </el-form-item>
 
-                <el-form-item label="出售价格">
+                <el-form-item label="出售价格" prop="productSellingPrice">
                   <el-input v-model="uploadData.productSellingPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="包邮">
@@ -83,12 +83,14 @@
                     <i class="el-icon-plus"></i>
                   </el-upload>
                 </el-form-item>
-                <el-form-item label="介绍">
+                <el-form-item label="介绍" prop="productIntro">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
                     v-model="uploadData.productIntro"
+                    maxlength="120"
+                    show-word-limit
                   >
                   </el-input>
                 </el-form-item>
@@ -101,21 +103,35 @@
             </el-dialog>
           </div>
           <div class="categorymenu">
-            
-            
-            <router-link :to="{name:'goods',query:{categoryId:0}}"><el-link icon="el-icon-s-goods" >全部商品</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 0 } }"
+              ><el-link icon="el-icon-s-goods">全部商品</el-link></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:342}}"><el-link icon="el-icon-camera-solid">数码产品</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 342 } }"
+              ><el-link icon="el-icon-camera-solid"
+                >数码产品</el-link
+              ></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:454}}"><el-link icon="el-icon-cpu">台式电脑</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 454 } }"
+              ><el-link icon="el-icon-cpu">台式电脑</el-link></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:449}}"><el-link icon="el-icon-s-platform">笔记本</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 449 } }"
+              ><el-link icon="el-icon-s-platform">笔记本</el-link></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:378}}"><el-link icon="el-icon-headset">耳机</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 378 } }"
+              ><el-link icon="el-icon-headset">耳机</el-link></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:225}}"><el-link icon="el-icon-mobile" >手机</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 225 } }"
+              ><el-link icon="el-icon-mobile">手机</el-link></router-link
+            >
             <br />
-            <router-link :to="{name:'goods',query:{categoryId:452}}"> <el-link icon="el-icon-edit-outline">平板</el-link></router-link>
+            <router-link :to="{ name: 'goods', query: { categoryId: 452 } }">
+              <el-link icon="el-icon-edit-outline">平板</el-link></router-link
+            >
           </div>
         </div>
         <!--动态图片轮播图 -->
@@ -145,7 +161,13 @@
                 query: { productId: item.productId },
               }"
             >
-              <div class="img"><img style="width: 170px; height: 140px" :src="item.productPicture" alt /></div>
+              <div class="img">
+                <img
+                  style="width: 170px; height: 140px"
+                  :src="item.productPicture"
+                  alt
+                />
+              </div>
 
               <h2>
                 <el-tag
@@ -175,7 +197,6 @@
         </ul>
       </div>
     </div>
- 
   </div>
 </template>
 <script>
@@ -211,6 +232,50 @@ export default {
       latestimges: require('../assets/imges/new.jpg'),
       // 最新上架商品数据
       recent: [],
+      rules: {
+        productName: [
+          {
+            required: true,
+            message: '商品名不可为空'
+          }, {
+            min: 5,
+            max: 10,
+            message: '长度在 5 到 10 个字符',
+            trigger: 'blur'
+          }],
+          productTitle: [
+          {
+            required: true,
+            message: '标题不可为空'
+          },{
+            min: 5,
+            max: 10,
+            message: '长度在 5 到 10 个字符',
+            trigger: 'blur'
+          }],
+          productSellingPrice: [
+          {
+            required: true,
+            message: '价格不可为空'
+          },{
+            type: 'number', 
+            message: '价格必须为数字值',
+            trigger: "blur"
+          }],
+          productIntro: [
+          {
+            required: true,
+            message: '介绍不可为空'
+          },{
+            min: 0,
+            max: 120,
+            message: '长度在 0 到 120 个字符',
+            trigger: 'blur'
+          }],
+
+          
+          
+      },
     }
   },
   created() {
@@ -218,6 +283,7 @@ export default {
     this.getUserId()
     this.getShoppingCart()
   },
+
   methods: {
 
     //获得最新上架商品
@@ -274,18 +340,18 @@ export default {
       }
       return isLt2M;
     },
-    
-    getUserId(){
+
+    getUserId() {
       let userInfo = localStorage.getItem('userInfo')
       userInfo = JSON.parse(userInfo)
       this.id = userInfo.id
     },
-    getShoppingCart(){
+    getShoppingCart() {
       //设置购物车数量
-      this.$api.getShoppingCartNumber(this.id).then((res=>{
-        this.$store.commit('setShoppingCartCount',res.data)
+      this.$api.getShoppingCartNumber(this.id).then((res => {
+        this.$store.commit('setShoppingCartCount', res.data)
       }))
-  },
+    },
 
   }
 

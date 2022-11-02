@@ -37,7 +37,7 @@ const api = {
   deleteAddress(data) {
     return request({
       url: 'api/addressBook/deleteAddress',
-      method: 'put',
+      method: 'delete',
       data
     })
   },
@@ -149,6 +149,13 @@ const api = {
       method: 'get',
       params: data
     })
-  }
+  },
+  queryPriceRange(data) {
+    return request({
+      url: 'api/product/queryPriceRange',
+      method: 'get',
+      params: data
+    })
+  },
 }
 export default api;

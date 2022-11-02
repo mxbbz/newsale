@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-17 17:23:01 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-21 00:18:33
+ * @Last Modified time: 2022-11-02 20:36:38
  * 样式和部分代码来自于https://gitee.com/hai-27/vue-store
  */
 
@@ -11,6 +11,13 @@
     <div class="wrapper">
       <!-- 商品展示 -->
       <div class="list">
+        <div class="condition">
+        <el-button icon="el-icon-bottom" @click="downchange">降序</el-button>
+        <el-button icon="el-icon-top" @click="upchange">升序</el-button>
+        <el-input v-model="min" style="width:80px;margin-left: 15px;" placeholder="请输入内容"></el-input>
+        <el-input v-model="max" style="width:80px;margin-left: 15px;" placeholder="请输入内容"></el-input>
+        <el-button icon="el-icon-search" style="margin-left: 15px;" @click="search">查询</el-button>
+      </div>
         <ul>
           <li v-for="item in productList" :key="item.product_id">
             <router-link
@@ -87,8 +94,11 @@ export default {
       productList: [null],
       page: 1,
       pageSize: 25,
+      min: 0,
+      max: 0,
     };
   },
+  
   //监听属性 类似于data概念
   computed: {},
   //监控data中的数据变化
@@ -115,6 +125,39 @@ export default {
   },
   //方法集合
   methods: {
+    search(){
+
+    },
+    upchange(){
+            	this.productList.sort((a,b)=>{
+              			return a.productSellingPrice - b.productSellingPrice;
+           		 })
+
+    },
+    downchange() {
+            function sortData(a, b) {
+              		return b.productSellingPrice - a.productSellingPrice;
+            	}	
+            this.productList.sort(sortData);
+            },
+    search(){
+      const data={
+        page: this.page,
+        pageSize: this.pageSize,
+        min:this.min,
+        max:this.max
+      }
+      this.$api.queryPriceRange(data).then((res) => {
+        if (String(res.code) === '1') {
+          
+          this.productList=res.data.records || []
+          window.scroll(0,0)
+        
+        }
+
+      })
+
+    },
     getProductList(categoryId) {
 
       const data = {
@@ -128,6 +171,7 @@ export default {
         if (String(res.code) === '1') {
           
           this.productList=res.data.records || []
+          window.scroll(0,0)
           
         }
       })
@@ -142,10 +186,12 @@ export default {
       this.$api.seracchProductList(data).then((res) => {
         if (String(res.code) === '1') {
           this.productList=res.data.records || []
+          window.scroll(0,0)
         }
       })
     },
     handleSizeChange (val) {
+      
             this.pageSize = val
             if(this.$route.query.serach!=null){
           this.seracchProductList(this.$route.query.serach);
@@ -194,6 +240,9 @@ a {
   width: auto;
   height: 1500px;
   border-radius: 20px;
+}
+.condition{
+  text-align: center;
 }
 .list ul li {
   float: left;
