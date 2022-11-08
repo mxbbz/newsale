@@ -2,13 +2,30 @@
   <div id="app" class="app">
     <div class="fixedBtn">
       <!--消息-->
-      <div><el-button  icon="el-icon-chat-dot-square" style="color:#0066CC" circle></el-button></div>
+      <div><el-button  icon="el-icon-chat-dot-square" @click="message = true" style="color:#0066CC" circle></el-button></div>
       <div> <el-button icon="el-icon-service" style="color:#0066CC" circle></el-button></div>
-      
-      
       <div><el-button icon="el-icon-caret-top" style="color:#0066CC" circle @click="backTop"></el-button></div>
     </div>
     
+    <el-dialog
+  title="消息"
+  :visible.sync="message"
+  width="70%"
+  :before-close="handleClose">
+  
+  <div class="message">
+    <ul v-for="o in 12" :key="o">
+      <li>
+        <el-button  class="button">
+    <el-avatar shape="square" :size="50" :src="squareUrl"></el-avatar>
+    {{'列表内容 ' + o }}
+  
+  </el-button>
+      </li>
+    </ul>
+  </div>
+</el-dialog>
+
     <!--顶部导航栏-->
     <div class="topbar">
       <div class="wrapper">
@@ -107,7 +124,8 @@ export default {
       state1: '',
       restaurants: [],
       load: [],
-      
+      message: false,
+      squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
     }
   },
   methods: {
@@ -247,5 +265,32 @@ a{
 }
 .fixedBtn i{
   font-size: 20px;
+}
+
+.message{
+  width: 19%;
+  height: 400px;
+  vertical-align:middle;
+  overflow:auto;
+}
+.message .button{
+  height: 100px;
+  width: 190px;
+}
+
+::-webkit-scrollbar{
+  width: 6px;
+}
+/* 定义滚动条轨道 */
+::-webkit-scrollbar-track{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  border-radius: 10px;
+  background-color: #FFF;
+}
+/* 滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgb(135, 111, 240);
+  background-color: #AAA;
 }
 </style>

@@ -125,9 +125,6 @@ export default {
   },
   //方法集合
   methods: {
-    search(){
-
-    },
     upchange(){
             	this.productList.sort((a,b)=>{
               			return a.productSellingPrice - b.productSellingPrice;
