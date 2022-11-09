@@ -203,9 +203,11 @@ export default {
 <style scoped>
 .userInfo {
   height: 700px;
+  width: 100%;
+  background-color: #ffffff;
 }
 .info {
-  width: 60%;
+  width: 70%;
   height: auto;
   margin: 0 auto;
   text-align: center;

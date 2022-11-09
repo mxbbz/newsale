@@ -79,6 +79,32 @@
         </div>
       </div>
     </div>
+
+
+    <div class="message" >
+      <div class="avatar">
+        <el-avatar shape="square" :size="size" :src="squareUrl"></el-avatar>
+      </div>
+      
+      <div class="input">
+        
+        <el-input
+  type="text"
+  placeholder="留下你的评论"
+  v-model="text"
+  maxlength="30"
+  show-word-limit
+  style="display:inline"
+>
+</el-input>
+</div>
+
+<div class="button">
+<el-button type="primary">发表评论</el-button>
+</div>
+      
+    </div>
+  
   </div>
 </template>
 
@@ -95,6 +121,7 @@ export default {
       productDetails: "",
       productPicture: "",
       userInfo: '',
+      squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
     };
   },
   //监听属性 类似于data概念
@@ -198,5 +225,17 @@ export default {
   margin-top: 70px;
   text-align: center;
 }
-
+.message{
+  width: 500px;
+}
+.avatar{
+  float: left;
+}
+.input{
+  float: left;
+  width: 250px;
+}
+.message .button{
+  float: left;
+}
 </style>

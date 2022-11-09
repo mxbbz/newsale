@@ -11,8 +11,10 @@
   title="消息"
   :visible.sync="message"
   width="70%"
-  :before-close="handleClose">
+  :before-close="handleClose"
+  >
   
+  <div style="display: flex">
   <div class="message">
     <ul v-for="o in 12" :key="o">
       <li>
@@ -24,6 +26,33 @@
       </li>
     </ul>
   </div>
+
+  <div class="messageInfo">
+    <el-divider></el-divider>
+
+  
+    <div class="messageContent" style="height: 260px;">
+
+    </div>
+
+    <el-input
+  type="textarea"
+  placeholder="请输入内容"
+  v-model="messageText"
+  maxlength="30"
+  show-word-limit
+  :rows="4"
+>
+
+</el-input>
+<el-button type="primary" style="float:right">发送</el-button>
+  </div>
+
+
+
+  <div class="userInfo">
+  </div>
+</div>
 </el-dialog>
 
     <!--顶部导航栏-->
@@ -126,6 +155,7 @@ export default {
       load: [],
       message: false,
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+      messageText: '',
     }
   },
   methods: {
@@ -276,6 +306,15 @@ a{
 .message .button{
   height: 100px;
   width: 190px;
+}
+.messageInfo{
+  width: 650px;
+  background-color: #f0f2f5;
+}
+.userInfo{
+  width: 180px;
+  background-color: #f0f2f5;
+  border-left:1px solid #000;
 }
 
 ::-webkit-scrollbar{
