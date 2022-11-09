@@ -22,22 +22,24 @@
               v-for="item in productPicture"
               :key="item.blockId"
             >
-              <el-image style="width: auto; height: 430px" :src="item.blockUrl"></el-image>
+              <el-image
+                style="width: auto; height: 430px"
+                :src="item.blockUrl"
+              ></el-image>
             </el-carousel-item>
           </el-carousel>
         </div>
         <!-- 用户信息 -->
         <div class="user">
-
-            <el-avatar
-              shape="square"
-              :src="userInfo.avatar"
-              :size="50"
-              style="margin-top: 20px"
-            ></el-avatar>
-            <p>{{ userInfo.name }}</p>
-            <el-button type="success">与我联系</el-button>
-            <el-button type="danger">举报</el-button>
+          <el-avatar
+            shape="square"
+            :src="userInfo.avatar"
+            :size="50"
+            style="margin-top: 20px"
+          ></el-avatar>
+          <p>{{ userInfo.name }}</p>
+          <el-button type="success">与我联系</el-button>
+          <el-button type="danger">举报</el-button>
         </div>
         <!-- 标题详情 -->
         <div class="details">
@@ -80,31 +82,27 @@
       </div>
     </div>
 
-
-    <div class="message" >
+    <div class="message">
       <div class="avatar">
         <el-avatar shape="square" :size="size" :src="squareUrl"></el-avatar>
       </div>
-      
-      <div class="input">
-        
-        <el-input
-  type="text"
-  placeholder="留下你的评论"
-  v-model="text"
-  maxlength="30"
-  show-word-limit
-  style="display:inline"
->
-</el-input>
-</div>
 
-<div class="button">
-<el-button type="primary">发表评论</el-button>
-</div>
-      
+      <div class="input">
+        <el-input
+          type="text"
+          placeholder="留下你的评论"
+          v-model="messageText"
+          maxlength="30"
+          show-word-limit
+          style="display: inline"
+        >
+        </el-input>
+      </div>
+
+      <div class="button">
+        <el-button type="primary">发表评论</el-button>
+      </div>
     </div>
-  
   </div>
 </template>
 
@@ -122,6 +120,7 @@ export default {
       productPicture: "",
       userInfo: '',
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+      messageText: '',
     };
   },
   //监听属性 类似于data概念
@@ -164,7 +163,7 @@ export default {
       this.$api.addShoppingCart({ userId: userId, productId: productId }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("添加成功")
-          this.$store.commit('setShoppingCartCount',this.$store.state.shoppingCartCount+1)
+          this.$store.commit('setShoppingCartCount', this.$store.state.shoppingCartCount + 1)
         } else {
           this.$message.error(res.msg)
         }
@@ -204,7 +203,6 @@ export default {
   margin: 70px;
 }
 .details {
-  
   background-color: #f5f5f5;
   margin-top: 120px;
 }
@@ -225,17 +223,17 @@ export default {
   margin-top: 70px;
   text-align: center;
 }
-.message{
+.message {
   width: 500px;
 }
-.avatar{
+.avatar {
   float: left;
 }
-.input{
+.input {
   float: left;
   width: 250px;
 }
-.message .button{
+.message .button {
   float: left;
 }
 </style>
