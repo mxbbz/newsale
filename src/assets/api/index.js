@@ -157,5 +157,18 @@ const api = {
       params: data
     })
   },
+  addComments(data) {
+    return request({
+      url: 'api/productComments/add',
+      method: 'post',
+      data: data
+    })
+  },
+  getMessageList(id) {
+    return request({
+      url: `api/productComments/get/${id}`,
+      method: 'get',
+    })
+  }
 }
 export default api;

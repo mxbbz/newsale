@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-10-21 00:30:43
+ * @Last Modified time: 2022-11-10 22:29:47
  * 商品信息页
  */
 
@@ -97,12 +97,25 @@
           style="display: inline"
         >
         </el-input>
+
+        <div class="messageList">
+      <div v-for="item in messageList" :key="item.commentsId">
+        <el-avatar shape="square" :size="size" :src="item.avatar" style="top: 20px;"></el-avatar>
+        <span style="font-weight:bold;font-size:18px;">{{item.userName}}</span>
+        <span style="font-size:10px">·{{item.commentsTime}}</span>
+        <span><el-button type="text" v-if="this.userId==item.id">删除</el-button></span>
+        <span><el-button type="text">回复</el-button></span>
+        <p style="margin-left: 30px;">{{item.commentsText}}</p>
+      </div>
+    </div>
       </div>
 
       <div class="button">
-        <el-button type="primary">发表评论</el-button>
+        <el-button type="primary" @click="addComments">发表评论</el-button>
       </div>
     </div>
+
+  
   </div>
 </template>
 
@@ -116,11 +129,13 @@ export default {
   data() {
     //这里存放数据
     return {
+      userId: "",
       productDetails: "",
       productPicture: "",
       userInfo: '',
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
       messageText: '',
+      messageList: "",
     };
   },
   //监听属性 类似于data概念
@@ -171,21 +186,41 @@ export default {
     },
     toConfirmOrder() {
       this.$router.push({ name: "confirmOrder", params: { productDetails: this.productDetails } })
-    }
+    },
+    //发表评论
+    addComments(){
+      let userInfo = localStorage.getItem('userInfo')
+      userInfo = JSON.parse(userInfo)
+      let userId = userInfo.id
+      this.$api.addComments({ commentsUserId: userId, productId: this.$route.query.productId, commentsText: this.messageText }).then((res => {
+        if (String(res.code) === '1') {
+          this.$message.success("发表成功")
+        }
+      }))
+    },
+    getMessageList(id){
+      this.$api.getMessageList(id).then((res=>{
+        if (String(res.code) === '1') {
+          this.messageList=res.data
+        }
+      }))
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
+      this.userId = this.$store.state.userId
+      
+
     let id = this.$route.query.productId
     this.getDetails(id)
     this.getPicture(id)
+    this.getMessageList(id)
 
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-
-  },
+  mounted() {  },
   beforeCreate() { }, //生命周期 - 创建之前
-  beforeMount() { }, //生命周期 - 挂载之前
+  beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() { }, //生命周期 - 更新之前
   updated() { }, //生命周期 - 更新之后
   beforeDestroy() { }, //生命周期 - 销毁之前
@@ -235,5 +270,12 @@ export default {
 }
 .message .button {
   float: left;
+}
+
+.messageList{
+
+  background-color: #fff;
+  width: 350px;
+
 }
 </style>
