@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-11-10 22:29:47
+ * @Last Modified time: 2022-11-11 23:24:44
  * 商品信息页
  */
 
@@ -84,7 +84,7 @@
 
     <div class="message">
       <div class="avatar">
-        <el-avatar shape="square" :size="size" :src="squareUrl"></el-avatar>
+        <el-avatar shape="square"  :src="squareUrl"></el-avatar>
       </div>
 
       <div class="input">
@@ -100,12 +100,33 @@
 
         <div class="messageList">
       <div v-for="item in messageList" :key="item.commentsId">
-        <el-avatar shape="square" :size="size" :src="item.avatar" style="top: 20px;"></el-avatar>
+        <el-avatar shape="square"  :src="item.avatar" style="top: 20px;"></el-avatar>
         <span style="font-weight:bold;font-size:18px;">{{item.userName}}</span>
         <span style="font-size:10px">·{{item.commentsTime}}</span>
-        <span><el-button type="text" v-if="this.userId==item.id">删除</el-button></span>
-        <span><el-button type="text">回复</el-button></span>
+        <el-button type="text" v-if="item.id==$store.state.userId" @click="removeMessage(item.commentsId)">删除</el-button>
+        <el-button type="text" @click="replyMessage(item.commentsId)">回复</el-button>
         <p style="margin-left: 30px;">{{item.commentsText}}</p>
+        
+        <div class="replyMessageInput" v-if="replyMessageId==item.commentsId">
+        <el-input
+          type="text"
+          placeholder="留下你的评论"
+          v-model="replyMessageText"
+          maxlength="30"
+          show-word-limit
+          style="display: inline"
+        >
+        </el-input>
+      </div>
+
+      <div class="replyMessageButton" v-if="replyMessageId==item.commentsId">
+        <el-button type="primary" @click="replyComments(item.commentsId)">回复评论</el-button>
+      </div>
+
+      <div class="reply" v-for="reply in messageList.productCommentsReplyVoList" :key="reply.replyId">
+          {{reply.replyText}}
+      </div>
+      
       </div>
     </div>
       </div>
@@ -126,16 +147,18 @@ import confirmOrder from './confirmOrder.vue'
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: { confirmOrder },
+  inject: ['reload'],
   data() {
     //这里存放数据
     return {
-      userId: "",
       productDetails: "",
       productPicture: "",
       userInfo: '',
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
       messageText: '',
       messageList: "",
+      replyMessageId: '',
+      replyMessageText: '',
     };
   },
   //监听属性 类似于data概念
@@ -195,9 +218,13 @@ export default {
       this.$api.addComments({ commentsUserId: userId, productId: this.$route.query.productId, commentsText: this.messageText }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("发表成功")
+          location.reload()
+        }else if(String(res.code) === '0'){
+          this.$message.error(res.msg)
         }
       }))
     },
+    // 获得留言
     getMessageList(id){
       this.$api.getMessageList(id).then((res=>{
         if (String(res.code) === '1') {
@@ -205,21 +232,39 @@ export default {
         }
       }))
     },
+    // 删除留言
+    removeMessage(commentsId){
+      this.$api.removeMessage(commentsId).then((res=>{
+        if (String(res.code) === '1') {
+          this.$message.success("删除成功")
+          location.reload()
+        }
+      }))
+    },
+    //打开回复留言
+    replyMessage(commentsId){
+      this.replyMessageId=commentsId
+    },
+    //回复留言请求
+    replyComments(commentsId){
+      this.$api.replyComments({replyUserId: this.$store.state.userId,replyCommentsId: commentsId,replyText:this.replyMessageText}).then((res=>{
+        if (String(res.code) === '1') {
+          this.$message.success("回复成功")
+          location.reload()
+        }
+      }))
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-      this.userId = this.$store.state.userId
-      
-
     let id = this.$route.query.productId
     this.getDetails(id)
     this.getPicture(id)
     this.getMessageList(id)
-
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {  },
-  beforeCreate() { }, //生命周期 - 创建之前
+  beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() { }, //生命周期 - 更新之前
   updated() { }, //生命周期 - 更新之后
@@ -259,7 +304,7 @@ export default {
   text-align: center;
 }
 .message {
-  width: 500px;
+width: 500px;
 }
 .avatar {
   float: left;
@@ -273,9 +318,19 @@ export default {
 }
 
 .messageList{
-
+  margin-top: 50px;
   background-color: #fff;
   width: 350px;
 
+}
+.replyMessageInput{
+  float: left;
+  width: 250px;
+}
+.replyMessageButton{
+  float: left;
+}
+.reply{
+  height: 120px;
 }
 </style>

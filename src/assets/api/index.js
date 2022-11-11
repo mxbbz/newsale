@@ -169,6 +169,19 @@ const api = {
       url: `api/productComments/get/${id}`,
       method: 'get',
     })
+  },
+  removeMessage(id) {
+    return request({
+      url: `api/productComments/delete/${id}`,
+      method: 'post',
+    })
+  },
+  replyComments(data) {
+    return request({
+      url: `api/productCommentsReply/add/`,
+      method: 'post',
+      data: data
+    })
   }
 }
 export default api;
