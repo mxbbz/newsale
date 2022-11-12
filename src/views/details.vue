@@ -2,7 +2,7 @@
  * @Author: mxbbz 
  * @Date: 2022-10-07 22:34:24 
  * @Last Modified by: mxbbz
- * @Last Modified time: 2022-11-11 23:24:44
+ * @Last Modified time: 2022-11-12 23:14:31
  * 商品信息页
  */
 
@@ -84,7 +84,7 @@
 
     <div class="message">
       <div class="avatar">
-        <el-avatar shape="square"  :src="squareUrl"></el-avatar>
+        <el-avatar shape="square" :src="squareUrl"></el-avatar>
       </div>
 
       <div class="input">
@@ -99,44 +99,109 @@
         </el-input>
 
         <div class="messageList">
-      <div v-for="item in messageList" :key="item.commentsId">
-        <el-avatar shape="square"  :src="item.avatar" style="top: 20px;"></el-avatar>
-        <span style="font-weight:bold;font-size:18px;">{{item.userName}}</span>
-        <span style="font-size:10px">·{{item.commentsTime}}</span>
-        <el-button type="text" v-if="item.id==$store.state.userId" @click="removeMessage(item.commentsId)">删除</el-button>
-        <el-button type="text" @click="replyMessage(item.commentsId)">回复</el-button>
-        <p style="margin-left: 30px;">{{item.commentsText}}</p>
-        
-        <div class="replyMessageInput" v-if="replyMessageId==item.commentsId">
-        <el-input
-          type="text"
-          placeholder="留下你的评论"
-          v-model="replyMessageText"
-          maxlength="30"
-          show-word-limit
-          style="display: inline"
-        >
-        </el-input>
-      </div>
+          <div v-for="item in messageList" :key="item.commentsId">
+            <el-avatar
+              shape="square"
+              :src="item.avatar"
+              style="top: 20px"
+            ></el-avatar>
+            <span style="font-weight: bold; font-size: 18px">{{
+              item.userName
+            }}</span>
+            <span style="font-size: 10px">·{{ item.commentsTime }}</span>
+            <el-button
+              type="text"
+              v-if="item.id == $store.state.userId"
+              @click="removeMessage(item.commentsId)"
+              >删除</el-button
+            >
+            <el-button type="text" @click="replyMessage(item.commentsId)"
+              >回复</el-button
+            >
+            <p style="margin-left: 30px">{{ item.commentsText }}</p>
+            <div
+              class="replyMessageInput"
+              v-if="replyMessageId == item.commentsId"
+            >
+              <el-input
+                type="text"
+                placeholder="留下你的评论"
+                v-model="replyMessageText"
+                maxlength="30"
+                show-word-limit
+                style="display: inline"
+              >
+              </el-input>
+            </div>
+            <div
+              class="replyMessageButton"
+              v-if="replyMessageId == item.commentsId"
+            >
+              <el-button
+                type="primary"
+                @click="replyComments(item.commentsId, item.commentsUserId)"
+                >回复评论</el-button
+              >
+            </div>
+            <div
+              v-for="reply in item.productCommentsReplyVoList"
+              :key="reply.replyId"
+            >
+              <el-avatar
+                shape="square"
+                :src="reply.avatar"
+                style="top: 20px"
+              ></el-avatar>
+              <span style="font-weight: bold; font-size: 18px"
+                >{{ reply.userName }}-回复-{{ reply.replyName }}</span
+              >
+              <span style="font-size: 10px">·{{ reply.replyTime }}</span>
+              <el-button
+                type="text"
+                v-if="reply.id == $store.state.userId"
+                @click="removeReplyMessage(reply.replyId)"
+                >删除</el-button
+              >
+              <el-button type="text" @click="addReplyMessage(reply.replyId)"
+                >回复</el-button
+              >
+              <p style="margin-left: 30px">{{ reply.replyText }}</p>
 
-      <div class="replyMessageButton" v-if="replyMessageId==item.commentsId">
-        <el-button type="primary" @click="replyComments(item.commentsId)">回复评论</el-button>
-      </div>
-
-      <div class="reply" v-for="reply in messageList.productCommentsReplyVoList" :key="reply.replyId">
-          {{reply.replyText}}
-      </div>
-      
-      </div>
-    </div>
+              <div
+                class="replyMessageButton"
+                v-if="replyMessageIdB == reply.replyId"
+              >
+                <el-button
+                  type="primary"
+                  @click="
+                    replyCommentsMessage(reply.replyId, reply.replyUserId)
+                  "
+                  >回复评论</el-button
+                >
+              </div>
+              <div
+                class="replyMessageInput"
+                v-if="replyMessageIdB == reply.replyId"
+              >
+                <el-input
+                  type="text"
+                  placeholder="留下你的评论"
+                  v-model="replyMessageText"
+                  maxlength="30"
+                  show-word-limit
+                  style="display: inline"
+                >
+                </el-input>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="button">
         <el-button type="primary" @click="addComments">发表评论</el-button>
       </div>
     </div>
-
-  
   </div>
 </template>
 
@@ -156,8 +221,9 @@ export default {
       userInfo: '',
       squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
       messageText: '',
-      messageList: "",
+      messageList: '',
       replyMessageId: '',
+      replyMessageIdB: '',
       replyMessageText: '',
     };
   },
@@ -211,7 +277,7 @@ export default {
       this.$router.push({ name: "confirmOrder", params: { productDetails: this.productDetails } })
     },
     //发表评论
-    addComments(){
+    addComments() {
       let userInfo = localStorage.getItem('userInfo')
       userInfo = JSON.parse(userInfo)
       let userId = userInfo.id
@@ -219,22 +285,32 @@ export default {
         if (String(res.code) === '1') {
           this.$message.success("发表成功")
           location.reload()
-        }else if(String(res.code) === '0'){
+        } else if (String(res.code) === '0') {
           this.$message.error(res.msg)
         }
       }))
     },
     // 获得留言
-    getMessageList(id){
-      this.$api.getMessageList(id).then((res=>{
+    getMessageList(id) {
+      this.$api.getMessageList(id).then((res => {
         if (String(res.code) === '1') {
-          this.messageList=res.data
+          this.messageList = res.data
+          console.log(this.messageList.productCommentsReplyVoList)
         }
       }))
     },
     // 删除留言
-    removeMessage(commentsId){
-      this.$api.removeMessage(commentsId).then((res=>{
+    removeMessage(commentsId) {
+      this.$api.removeMessage(commentsId).then((res => {
+        if (String(res.code) === '1') {
+          this.$message.success("删除成功")
+          location.reload()
+        }
+      }))
+    },
+    // 删除回复
+    removeReplyMessage(replyId) {
+      this.$api.removeReplyMessage(replyId).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("删除成功")
           location.reload()
@@ -242,12 +318,29 @@ export default {
       }))
     },
     //打开回复留言
-    replyMessage(commentsId){
-      this.replyMessageId=commentsId
+    replyMessage(commentsId) {
+      this.replyMessageId = commentsId
+      this.replyMessageIdB = 0
     },
     //回复留言请求
-    replyComments(commentsId){
-      this.$api.replyComments({replyUserId: this.$store.state.userId,replyCommentsId: commentsId,replyText:this.replyMessageText}).then((res=>{
+    replyComments(commentsId, commentsUserId) {
+      this.$api.replyComments({ replyToId: commentsUserId, replyUserId: this.$store.state.userId, replyCommentsId: commentsId, replyText: this.replyMessageText }).then((res => {
+        if (String(res.code) === '1') {
+          this.$message.success("回复成功")
+          location.reload()
+        }
+      }))
+    },
+
+    //打开回复留言
+    addReplyMessage(replyId) {
+      this.replyMessageIdB = replyId
+      this.replyMessageId = 0
+
+    },
+    //回复留言请求
+    replyCommentsMessage(replyId, replyUserId) {
+      this.$api.replyComments({ replyToId: replyUserId, replyUserId: this.$store.state.userId, replyCommentsId: replyId, replyText: this.replyMessageText }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("回复成功")
           location.reload()
@@ -263,9 +356,9 @@ export default {
     this.getMessageList(id)
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {  },
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
+  mounted() { },
+  beforeCreate() { }, //生命周期 - 创建之前
+  beforeMount() { }, //生命周期 - 挂载之前
   beforeUpdate() { }, //生命周期 - 更新之前
   updated() { }, //生命周期 - 更新之后
   beforeDestroy() { }, //生命周期 - 销毁之前
@@ -304,7 +397,7 @@ export default {
   text-align: center;
 }
 .message {
-width: 500px;
+  width: 700px;
 }
 .avatar {
   float: left;
@@ -317,20 +410,16 @@ width: 500px;
   float: left;
 }
 
-.messageList{
+.messageList {
   margin-top: 50px;
   background-color: #fff;
-  width: 350px;
-
+  width: 600px;
 }
-.replyMessageInput{
+.replyMessageInput {
   float: left;
-  width: 250px;
+  width: 500px;
 }
-.replyMessageButton{
-  float: left;
-}
-.reply{
-  height: 120px;
+.replyMessageButton {
+  float: right;
 }
 </style>

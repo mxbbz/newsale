@@ -182,6 +182,12 @@ const api = {
       method: 'post',
       data: data
     })
-  }
+  },
+  removeReplyMessage(id) {
+    return request({
+      url: `api/productCommentsReply/delete/${id}`,
+      method: 'post',
+    })
+  },
 }
 export default api;
