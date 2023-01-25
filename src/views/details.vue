@@ -106,7 +106,7 @@
               style="top: 20px"
             ></el-avatar>
             <span style="font-weight: bold; font-size: 18px">{{
-              item.userName
+              item.name
             }}</span>
             <span style="font-size: 10px">·{{ item.commentsTime }}</span>
             <el-button
@@ -118,7 +118,7 @@
             <el-button type="text" @click="replyMessage(item.commentsId)"
               >回复</el-button
             >
-            <p style="margin-left: 30px">{{ item.commentsText }}</p>
+            <p style="margin-left: 30px">{{ item.commentMsg }}</p>
             <div
               class="replyMessageInput"
               v-if="replyMessageId == item.commentsId"
@@ -144,7 +144,7 @@
               >
             </div>
             <div
-              v-for="reply in item.productCommentsReplyVoList"
+              v-for="reply in item.productCommentsReplyVos"
               :key="reply.replyId"
             >
               <el-avatar
@@ -153,19 +153,19 @@
                 style="top: 20px"
               ></el-avatar>
               <span style="font-weight: bold; font-size: 18px"
-                >{{ reply.userName }}-回复-{{ reply.replyName }}</span
+                >{{ reply.name }}-回复-{{ reply.name }}</span
               >
-              <span style="font-size: 10px">·{{ reply.replyTime }}</span>
+              <span style="font-size: 10px">·{{ reply.createTime }}</span>
               <el-button
                 type="text"
                 v-if="reply.id == $store.state.userId"
-                @click="removeReplyMessage(reply.replyId)"
+                @click="removeReplyMessage(reply.userId)"
                 >删除</el-button
               >
               <el-button type="text" @click="addReplyMessage(reply.replyId)"
                 >回复</el-button
               >
-              <p style="margin-left: 30px">{{ reply.replyText }}</p>
+              <p style="margin-left: 30px">{{ reply.replyMsg }}</p>
 
               <div
                 class="replyMessageButton"
@@ -174,7 +174,7 @@
                 <el-button
                   type="primary"
                   @click="
-                    replyCommentsMessage(reply.replyId, reply.replyUserId)
+                    replyCommentsMessage(reply.replyId, reply.userId)
                   "
                   >回复评论</el-button
                 >
@@ -281,7 +281,7 @@ export default {
       let userInfo = localStorage.getItem('userInfo')
       userInfo = JSON.parse(userInfo)
       let userId = userInfo.id
-      this.$api.addComments({ commentsUserId: userId, productId: this.$route.query.productId, commentsText: this.messageText }).then((res => {
+      this.$api.addComments({ userId: userId, productId: this.$route.query.productId, commentMsg: this.messageText }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("发表成功")
           location.reload()
@@ -324,7 +324,7 @@ export default {
     },
     //回复留言请求
     replyComments(commentsId, commentsUserId) {
-      this.$api.replyComments({ replyToId: commentsUserId, replyUserId: this.$store.state.userId, replyCommentsId: commentsId, replyText: this.replyMessageText }).then((res => {
+      this.$api.replyComments({ replyId: commentsUserId, userId: this.$store.state.userId, commentsId: commentsId, replyMsg: this.replyMessageText }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("回复成功")
           location.reload()
