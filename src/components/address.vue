@@ -167,6 +167,7 @@ export default {
       let id=userName.id
       this.tableData[index].userId=id
       this.tableData[index].province=CodeToText[this.tableData[index].province[0]]+CodeToText[this.tableData[index].province[1]]+CodeToText[this.tableData[index].province[2]]
+      console.log(id)
       this.$api.saveAddress(this.tableData[index]).then(res => {
         if (String(res.code) === '1') {
           this.getAddr()

@@ -41,7 +41,7 @@ const api = {
       data
     })
   },
-  saveAddress(id) {
+  saveAddress(data) {
     return request({
       url: 'api/addressBook/saveAddress',
       method: 'post',
@@ -187,6 +187,12 @@ const api = {
     return request({
       url: `api/productCommentsReply/delete/${id}`,
       method: 'post',
+    })
+  },
+  getBLockList(){
+    return request({
+      url: 'api/block/getBlockList/',
+      method: 'get',
     })
   },
 }

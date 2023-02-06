@@ -45,7 +45,7 @@
         <el-image
           style="width: 100px; height: 100px"
           :src="item.productPicture"
-          :fit="fit"
+          
         ></el-image>
         {{ item.productName }}
         {{ item.productSellingPrice }}
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-
+import HomeVue from '/newsale/newsale/src/views/home.vue';
 export default {
   components: {},
   data() {
@@ -101,10 +101,10 @@ export default {
     // 购买请求
     addOrder() {
       let addressId = this.currentRow.id
-      let productId = this.productDetails.productId
+      let productId = this.productDetails[0].productId
 
-      let sellerId = this.productDetails.productUserId
-      let amount = this.productDetails.productSellingPrice
+      let sellerId = this.productDetails[0].productUserId
+      let amount = this.productDetails[0].productSellingPrice
       let userName = localStorage.getItem('userInfo')
       userName = JSON.parse(userName)
       let purchaseId = userName.id
@@ -112,6 +112,7 @@ export default {
       this.$api.addOrder({ addressId: addressId, productId: productId, sellerId: sellerId, purchaseId: purchaseId, amount: amount }).then((res => {
         if (String(res.code) === '1') {
           this.$message.success("购买成功")
+          this.$router.push(HomeVue)
         }
       }))
 
@@ -127,7 +128,7 @@ export default {
     }else{
       this.productDetails.push(this.$route.params.productDetails)
     }
-    
+    console.log(this.productDetails)
     this.getAddr()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）

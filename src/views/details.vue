@@ -174,7 +174,7 @@
                 <el-button
                   type="primary"
                   @click="
-                    replyCommentsMessage(reply.replyId, reply.userId)
+                    replyComments(reply.replyId, reply.userId)
                   "
                   >回复评论</el-button
                 >
@@ -275,6 +275,7 @@ export default {
     },
     toConfirmOrder() {
       this.$router.push({ name: "confirmOrder", params: { productDetails: this.productDetails } })
+      
     },
     //发表评论
     addComments() {

@@ -137,8 +137,8 @@
         <!--动态图片轮播图 -->
         <div class="block">
           <el-carousel :interval="4000" arrow="always" height="400px">
-            <el-carousel-item v-for="item in imagebox" :key="item.id">
-              <img :src="item.idView" class="image" />
+            <el-carousel-item v-for="item in imagebox" :key="item.blockId">
+              <img :src="item.imageUrl" class="image" />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -223,11 +223,7 @@ export default {
       //发布闲置
       dialogVisible: false,
       //轮播图
-      imagebox: [
-        { id: 0, idView: require('../assets/imges/banner.jpg') },
-        { id: 1, idView: require('../assets/imges/banner2.jpg') },
-        { id: 2, idView: require('../assets/imges/banner3.jpg') },
-      ],
+      imagebox: [],
       //最新商家图品
       latestimges: require('../assets/imges/new.jpg'),
       // 最新上架商品数据
@@ -282,6 +278,7 @@ export default {
     this.getList()
     this.getUserId()
     this.getShoppingCart()
+    this.getBLockList()
   },
 
   methods: {
@@ -350,6 +347,18 @@ export default {
       //设置购物车数量
       this.$api.getShoppingCartNumber(this.id).then((res => {
         this.$store.commit('setShoppingCartCount', res.data)
+      }))
+    },
+
+    getBLockList(){
+      this.$api.getBLockList().then((res=>{
+
+        for (let index = 0; index < res.data.length; index++) {
+          
+          this.imagebox.push(res.data[index]);
+        }
+          
+          console.log(this.imagebox);
       }))
     },
 
